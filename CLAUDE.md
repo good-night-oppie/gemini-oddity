@@ -173,3 +173,7 @@ test/manual-test.sh
 - Specify Claude Code and Gemini CLI versions
 - Provide sample inputs when possible
 - Test with latest version before reporting
+
+## Task Master AI Instructions
+**Import Task Master's development workflow commands and guidelines, treat as if import is in the main CLAUDE.md file.**
+@./.taskmaster/CLAUDE.md

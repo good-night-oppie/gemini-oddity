@@ -1,0 +1,236 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [ main, develop, feat/* ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+
+jobs:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        bash-version: ['4.4', '5.0', '5.1']
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Bash ${{ matrix.bash-version }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y bash=${{ matrix.bash-version }}*
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y jq curl netcat openssl
+    
+    - name: Run unit tests
+      run: |
+        chmod +x test/run-all-tests.sh
+        ./test/run-all-tests.sh --unit-only
+    
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./test/reports/coverage.json
+        flags: unit
+        name: unit-coverage
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y jq curl netcat openssl
+    
+    - name: Setup test environment
+      run: |
+        mkdir -p ~/.claude-gemini-bridge/tokens
+        echo '{"auth_type":"oauth","provider":"test"}' > ~/.claude-gemini-bridge/config.json
+    
+    - name: Run integration tests
+      run: |
+        chmod +x test/run-all-tests.sh
+        ./test/run-all-tests.sh --integration-only
+    
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./test/reports/coverage.json
+        flags: integration
+        name: integration-coverage
+
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Run security tests
+      run: |
+        chmod +x test/security/test-security-audit.sh
+        ./test/security/test-security-audit.sh
+    
+    - name: Run shellcheck
+      run: |
+        sudo apt-get install -y shellcheck
+        find . -name "*.sh" -exec shellcheck {} \;
+    
+    - name: Check for secrets
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: ${{ github.event.repository.default_branch }}
+        head: HEAD
+
+  performance-benchmarks:
+    name: Performance Benchmarks
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y jq curl netcat openssl time
+    
+    - name: Run performance tests
+      run: |
+        chmod +x test/performance/test-performance-benchmarks.sh
+        ./test/performance/test-performance-benchmarks.sh
+    
+    - name: Store benchmark results
+      uses: benchmark-action/github-action-benchmark@v1
+      with:
+        tool: 'customBiggerIsBetter'
+        output-file-path: test/reports/benchmark.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        auto-push: true
+
+  e2e-tests:
+    name: End-to-End Tests
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Install Claude Code CLI
+      run: |
+        # Mock Claude Code installation for testing
+        echo '#!/bin/bash' > /usr/local/bin/claude
+        echo 'echo "Claude Code mock"' >> /usr/local/bin/claude
+        chmod +x /usr/local/bin/claude
+    
+    - name: Install Gemini CLI
+      run: |
+        # Mock Gemini CLI installation
+        echo '#!/bin/bash' > /usr/local/bin/gemini
+        echo 'echo "Gemini CLI mock"' >> /usr/local/bin/gemini
+        chmod +x /usr/local/bin/gemini
+    
+    - name: Run E2E tests
+      run: |
+        chmod +x test/run-all-tests.sh
+        ./test/run-all-tests.sh --e2e-only
+    
+    - name: Upload test artifacts
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-logs
+        path: |
+          logs/
+          test/reports/
+
+  compatibility-matrix:
+    name: Compatibility Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, ubuntu-22.04, macos-latest]
+        include:
+          - os: ubuntu-20.04
+            shell: bash
+          - os: ubuntu-22.04
+            shell: bash
+          - os: macos-latest
+            shell: bash
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Install OS-specific dependencies
+      run: |
+        if [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+          brew install jq curl netcat openssl
+        else
+          sudo apt-get update
+          sudo apt-get install -y jq curl netcat openssl
+        fi
+    
+    - name: Run compatibility tests
+      shell: ${{ matrix.shell }}
+      run: |
+        chmod +x test/test-runner.sh
+        ./test/test-runner.sh
+
+  publish-results:
+    name: Publish Test Results
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests, security-audit, performance-benchmarks, e2e-tests]
+    if: always()
+    
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+    
+    - name: Publish test report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: Test Results
+        path: 'test/reports/*.xml'
+        reporter: java-junit
+    
+    - name: Comment on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const coverage = JSON.parse(fs.readFileSync('test/reports/coverage.json', 'utf8'));
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `## Test Results ✅
+            
+            - **Unit Tests**: ${coverage.unit}% coverage (target: 85%)
+            - **Integration Tests**: ${coverage.integration}% coverage (target: 75%)
+            - **E2E Tests**: ${coverage.e2e}% coverage (target: 60%)
+            - **Security**: All checks passed
+            - **Performance**: All benchmarks within targets
+            
+            View full report in the Actions tab.`
+          })

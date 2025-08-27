@@ -359,3 +359,289 @@ tar -czf claude-gemini-debug-$(date +%Y%m%d).tar.gz \
 - **"Files too large/small"**: Thresholds not met
 - **"Rate limiting"**: Normal, shows correct function
 - **"Cache expired"**: Normal, cache being renewed
+
+---
+
+## 🔐 OAuth Authentication Issues
+
+### OAuth Setup Problems
+
+#### "Token expired" during operation
+**Symptom:** Operations fail with token expiration error
+
+**Solution steps:**
+1. Check token status:
+   ```bash
+   ./hooks/lib/oauth-handler.sh status
+   ```
+
+2. Refresh token manually:
+   ```bash
+   ./hooks/lib/oauth-handler.sh refresh
+   ```
+
+3. If refresh fails, re-authenticate:
+   ```bash
+   gemini auth login
+   # Or
+   ./hooks/lib/oauth-handler.sh authenticate
+   ```
+
+---
+
+#### "Invalid client" error
+**Symptom:** OAuth authentication fails with client error
+
+**Debug steps:**
+1. Verify OAuth credentials:
+   ```bash
+   cat ~/.claude-gemini-bridge/config.json | jq '.oauth.client_id'
+   ```
+
+2. Check Google Cloud Console:
+   - Verify client ID matches
+   - Check client secret is correct
+   - Ensure OAuth consent screen configured
+
+3. Re-run setup:
+   ```bash
+   ./setup/interactive-setup.sh --force
+   ```
+
+---
+
+#### Browser doesn't open for OAuth
+**Symptom:** No browser opens during authentication
+
+**Solution for SSH/headless systems:**
+1. Get authorization URL manually:
+   ```bash
+   ./hooks/lib/oauth-handler.sh get-auth-url
+   ```
+
+2. Copy URL and open in local browser
+
+3. After authorization, copy code and set:
+   ```bash
+   ./hooks/lib/oauth-handler.sh set-auth-code "AUTH_CODE_HERE"
+   ```
+
+---
+
+#### "Token decryption failed"
+**Symptom:** Cannot decrypt stored OAuth tokens
+
+**Solution steps:**
+1. Check encryption key:
+   ```bash
+   ls -la ~/.claude-gemini-bridge/.encryption_key
+   ```
+
+2. Clear corrupted tokens:
+   ```bash
+   rm -rf ~/.claude-gemini-bridge/tokens/
+   ```
+
+3. Re-authenticate:
+   ```bash
+   ./setup/interactive-setup.sh
+   ```
+
+---
+
+### OAuth Token Issues
+
+#### Tokens not refreshing automatically
+**Symptom:** Manual refresh required frequently
+
+**Debug:**
+```bash
+# Check refresh token
+./hooks/lib/oauth-handler.sh validate-refresh
+
+# Check auto-refresh configuration
+grep "auto_refresh" ~/.claude-gemini-bridge/config.json
+
+# Enable auto-refresh
+jq '.oauth.auto_refresh = true' ~/.claude-gemini-bridge/config.json > /tmp/config
+mv /tmp/config ~/.claude-gemini-bridge/config.json
+```
+
+---
+
+#### "Insufficient scopes" error
+**Symptom:** API calls fail with permission errors
+
+**Solution:**
+1. Check current scopes:
+   ```bash
+   ./hooks/lib/oauth-handler.sh scopes
+   ```
+
+2. Update required scopes:
+   ```bash
+   # Edit config.json
+   vi ~/.claude-gemini-bridge/config.json
+   # Add required scope:
+   # "scope": "https://www.googleapis.com/auth/generative-language.retriever"
+   ```
+
+3. Re-authenticate with new scopes:
+   ```bash
+   ./hooks/lib/oauth-handler.sh revoke
+   ./hooks/lib/oauth-handler.sh authenticate
+   ```
+
+---
+
+### OAuth Migration Issues
+
+#### API key still being used after migration
+**Symptom:** OAuth configured but API key in use
+
+**Solution:**
+```bash
+# Check environment
+echo $GEMINI_API_KEY
+unset GEMINI_API_KEY
+
+# Remove from shell config
+sed -i '/GEMINI_API_KEY/d' ~/.bashrc ~/.zshrc
+
+# Verify OAuth active
+cat ~/.claude-gemini-bridge/config.json | jq '.auth_type'
+# Should show "oauth"
+```
+
+---
+
+#### Both authentication methods configured
+**Symptom:** Conflict between API key and OAuth
+
+**Fix:**
+```bash
+# Clean configuration
+jq 'del(.api_key) | .auth_type = "oauth"' \
+  ~/.claude-gemini-bridge/config.json > /tmp/config.json
+mv /tmp/config.json ~/.claude-gemini-bridge/config.json
+
+# Restart Claude Code
+```
+
+---
+
+### OAuth Security Issues
+
+#### Tokens visible in logs
+**Symptom:** Security risk from exposed tokens
+
+**Solution:**
+1. Check log files:
+   ```bash
+   grep -r "token\|secret" logs/
+   ```
+
+2. Clear sensitive logs:
+   ```bash
+   find logs/ -type f -exec sed -i 's/token=.*/token=REDACTED/g' {} \;
+   ```
+
+3. Enable log filtering:
+   ```bash
+   # In debug.conf
+   FILTER_SENSITIVE_DATA=true
+   ```
+
+---
+
+#### Token files have wrong permissions
+**Symptom:** Security warning about file permissions
+
+**Fix permissions:**
+```bash
+# Set secure permissions
+chmod 700 ~/.claude-gemini-bridge
+chmod 700 ~/.claude-gemini-bridge/tokens
+chmod 600 ~/.claude-gemini-bridge/tokens/*
+chmod 600 ~/.claude-gemini-bridge/config.json
+
+# Verify
+ls -la ~/.claude-gemini-bridge/tokens/
+```
+
+---
+
+## 📊 OAuth Debugging
+
+### Enable OAuth Debug Mode
+
+```bash
+# Set debug environment
+export OAUTH_DEBUG=true
+export DEBUG_LEVEL=3
+
+# Run with verbose output
+./hooks/lib/oauth-handler.sh authenticate 2>&1 | tee oauth_debug.log
+```
+
+### OAuth Flow Tracing
+
+```bash
+# Trace OAuth flow
+./test/trace-oauth-flow.sh
+
+# Output shows:
+# 1. Authorization URL generation
+# 2. User authorization
+# 3. Code exchange
+# 4. Token receipt
+# 5. Token encryption and storage
+```
+
+### Token Validation
+
+```bash
+# Comprehensive token check
+./hooks/lib/oauth-handler.sh validate --verbose
+
+# Checks:
+# - Token exists
+# - Token not expired  
+# - Token decrypts properly
+# - Token has required scopes
+# - Refresh token valid
+```
+
+---
+
+## 🔄 OAuth Recovery
+
+### Complete OAuth Reset
+
+```bash
+# Full OAuth reset
+./scripts/reset-oauth.sh
+
+# Or manually:
+rm -rf ~/.claude-gemini-bridge/tokens/
+rm -f ~/.claude-gemini-bridge/.encryption_key
+jq 'del(.oauth.tokens)' ~/.claude-gemini-bridge/config.json > /tmp/config
+mv /tmp/config ~/.claude-gemini-bridge/config.json
+
+# Re-authenticate
+./setup/interactive-setup.sh
+```
+
+### Backup and Restore OAuth
+
+```bash
+# Backup OAuth configuration
+tar -czf oauth-backup-$(date +%Y%m%d).tar.gz \
+  ~/.claude-gemini-bridge/config.json \
+  ~/.claude-gemini-bridge/tokens/ \
+  ~/.claude-gemini-bridge/.encryption_key
+
+# Restore OAuth configuration
+tar -xzf oauth-backup-20240101.tar.gz -C ~/
+chmod 600 ~/.claude-gemini-bridge/tokens/*
+```
