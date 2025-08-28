@@ -13,7 +13,8 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Global variables
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TARGET_DIR="$(pwd)/.claude-gemini-bridge"
 CLAUDE_SETTINGS_FILE="$HOME/.claude/settings.json"
 BACKUP_SUFFIX=$(date +%Y%m%d_%H%M%S)
 
@@ -35,7 +36,7 @@ error_exit() {
     log "error" "$1"
     echo ""
     echo "💥 Installation aborted!"
-    echo "For help see: $SCRIPT_DIR/docs/TROUBLESHOOTING.md"
+    echo "For help see: $TARGET_DIR/docs/TROUBLESHOOTING.md"
     exit 1
 }
 
@@ -67,16 +68,31 @@ check_requirements() {
     log "info" "All prerequisites met"
 }
 
-# Create directory structure if needed
-create_directories() {
-    log "info" "Creating directory structure..."
+# Copy bridge files to target directory
+copy_bridge_files() {
+    log "info" "Copying bridge files to $TARGET_DIR..."
     
-    mkdir -p "$SCRIPT_DIR"/{cache/gemini,logs/debug,debug/captured}
+    # Create target directory
+    mkdir -p "$TARGET_DIR"
+    
+    # Copy essential directories
+    cp -r "$SOURCE_DIR/hooks" "$TARGET_DIR/" 2>/dev/null
+    cp -r "$SOURCE_DIR/test" "$TARGET_DIR/" 2>/dev/null
+    cp -r "$SOURCE_DIR/docs" "$TARGET_DIR/" 2>/dev/null
+    cp -r "$SOURCE_DIR/scripts" "$TARGET_DIR/" 2>/dev/null
+    
+    # Copy essential files
+    cp "$SOURCE_DIR/README.md" "$TARGET_DIR/" 2>/dev/null
+    cp "$SOURCE_DIR/LICENSE" "$TARGET_DIR/" 2>/dev/null
+    cp "$SOURCE_DIR/project-uninstall.sh" "$TARGET_DIR/uninstall.sh" 2>/dev/null
+    
+    # Create working directories
+    mkdir -p "$TARGET_DIR"/{cache/gemini,logs/debug,debug/captured}
     
     if [ $? -eq 0 ]; then
-        log "info" "Directory structure ready"
+        log "info" "Bridge files copied successfully"
     else
-        error_exit "Error creating directory structure"
+        error_exit "Error copying bridge files"
     fi
 }
 
@@ -123,7 +139,7 @@ configure_claude_hooks() {
     fi
     
     # Our hook configuration
-    local hook_command="$SCRIPT_DIR/hooks/gemini-bridge.sh"
+    local hook_command="$TARGET_DIR/hooks/gemini-bridge.sh"
     
     # Ask user which tools to intercept
     echo ""
@@ -286,7 +302,7 @@ set_permissions() {
     log "info" "Setting file permissions..."
     
     # Make all shell scripts executable
-    find "$SCRIPT_DIR" -name "*.sh" -exec chmod +x {} \;
+    find "$TARGET_DIR" -name "*.sh" -exec chmod +x {} \;
     
     log "info" "Permissions set"
 }
@@ -300,22 +316,22 @@ run_basic_tests() {
     local test_failures=0
     
     for test in "${lib_tests[@]}"; do
-        if [ -f "$SCRIPT_DIR/hooks/lib/$test" ]; then
-            if "$SCRIPT_DIR/hooks/lib/$test" >/dev/null 2>&1; then
+        if [ -f "$TARGET_DIR/hooks/lib/$test" ]; then
+            if "$TARGET_DIR/hooks/lib/$test" >/dev/null 2>&1; then
                 log "debug" "$test: OK"
             else
                 log "warn" "$test: Tests failed"
                 test_failures=$((test_failures + 1))
             fi
         else
-            log "warn" "File not found: $SCRIPT_DIR/hooks/lib/$test"
+            log "warn" "File not found: $TARGET_DIR/hooks/lib/$test"
             test_failures=$((test_failures + 1))
         fi
     done
     
     # Test hook script with mock input
     local test_json='{"tool_name":"Read","tool_input":{"file_path":"test.txt"},"session_id":"test","transcript_path":"/tmp/test"}'
-    local hook_result=$(echo "$test_json" | "$SCRIPT_DIR/hooks/gemini-bridge.sh" 2>/dev/null)
+    local hook_result=$(echo "$test_json" | "$TARGET_DIR/hooks/gemini-bridge.sh" 2>/dev/null)
     
     if echo "$hook_result" | jq empty 2>/dev/null; then
         log "info" "Hook script test successful"
@@ -335,10 +351,10 @@ run_basic_tests() {
 # Show installation summary
 show_summary() {
     echo ""
-    echo "🎉 Installation completed successfully!"
+    echo "🎉 Configuration completed successfully!"
     echo "======================================="
     echo ""
-    echo "📁 Installation Directory: $SCRIPT_DIR"
+    echo "📁 Bridge installed in: $TARGET_DIR"
     echo "⚙️  Claude Settings: $CLAUDE_SETTINGS_FILE"
     echo ""
     echo "🧪 Next steps:"
@@ -347,31 +363,37 @@ show_summary() {
     echo "      Exit Claude Code completely and restart it"
     echo ""
     echo "   2. Test the installation:"
-    echo "      $SCRIPT_DIR/test/test-runner.sh"
+    echo "      $TARGET_DIR/test/test-runner.sh"
     echo ""
     echo "   3. Use Claude Code normally:"
     echo "      Large file analyses will automatically use Gemini!"
     echo ""
     echo "📚 Documentation:"
-    echo "   - README: $SCRIPT_DIR/README.md"
-    echo "   - Troubleshooting: $SCRIPT_DIR/docs/TROUBLESHOOTING.md"
+    echo "   - README: $TARGET_DIR/README.md"
+    echo "   - Troubleshooting: $TARGET_DIR/docs/TROUBLESHOOTING.md"
     echo ""
     echo "🔧 Configuration:"
-    echo "   - Debug level: $SCRIPT_DIR/hooks/config/debug.conf"
-    echo "   - Logs: $SCRIPT_DIR/logs/debug/"
+    echo "   - Debug level: $TARGET_DIR/hooks/config/debug.conf"
+    echo "   - Logs: $TARGET_DIR/logs/debug/"
     echo ""
     echo "💡 Debug commands:"
-    echo "   - View logs: tail -f $SCRIPT_DIR/logs/debug/\$(date +%Y%m%d).log"
-    echo "   - Clear cache: rm -rf $SCRIPT_DIR/cache/gemini/*"
-    echo "   - Uninstall: $SCRIPT_DIR/uninstall.sh"
+    echo "   - View logs: tail -f $TARGET_DIR/logs/debug/\$(date +%Y%m%d).log"
+    echo "   - Clear cache: rm -rf $TARGET_DIR/cache/gemini/*"
+    echo "   - Uninstall: $TARGET_DIR/uninstall.sh"
     echo ""
     echo "🚨 IMPORTANT: You must restart Claude Code for the hooks to take effect!"
 }
 
 # Main installation
 main() {
-    echo "This script configures the Claude-Gemini Bridge in the current directory."
-    echo "Installation directory: $SCRIPT_DIR"
+    echo "This script will install the Claude-Gemini Bridge in your current project."
+    echo ""
+    echo "Current directory: $(pwd)"
+    echo "Bridge will be installed in: $TARGET_DIR"
+    echo "Claude settings: $CLAUDE_SETTINGS_FILE"
+    echo ""
+    echo "The bridge files will be copied to your project and Claude will be"
+    echo "configured to use this project-specific installation."
     echo ""
     read -p "Continue with installation? (y/N): " confirm
     
@@ -384,7 +406,7 @@ main() {
     
     # Installation steps
     check_requirements
-    create_directories
+    copy_bridge_files
     test_gemini_connection
     configure_claude_hooks
     set_permissions
