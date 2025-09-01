@@ -87,7 +87,12 @@ jobs:
     
     - name: Run shellcheck
       run: |
-        sudo apt-get install -y shellcheck
+        # Download shellcheck binary directly (no sudo required)
+        scversion="stable"
+        wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${scversion?}/shellcheck-${scversion?}.linux.x86_64.tar.xz" | tar -xJv
+        export PATH="./shellcheck-${scversion}:$PATH"
+        
+        # Run shellcheck on all shell scripts
         find . -name "*.sh" -exec shellcheck {} \;
     
     - name: Check for secrets
