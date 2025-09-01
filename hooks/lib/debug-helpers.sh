@@ -52,6 +52,12 @@ debug_log() {
     if [ "$level" -le "$DEBUG_LEVEL" ]; then
         local log_entry="[$timestamp] $component_prefix$message"
         
+        # Ensure DEBUG_LOG_DIR is set
+        if [ -z "$DEBUG_LOG_DIR" ]; then
+            DEBUG_LOG_DIR="/tmp/claude-gemini-bridge-logs"
+            mkdir -p "$DEBUG_LOG_DIR" 2>/dev/null
+        fi
+        
         # Level-specific handling
         case $level in
             1) 
@@ -68,8 +74,10 @@ debug_log() {
                 ;;
         esac
         
-        # Write to file
-        echo "$log_entry" >> "$log_file"
+        # Write to file (with error handling)
+        if [ -n "$log_file" ] && [ -n "$DEBUG_LOG_DIR" ]; then
+            echo "$log_entry" >> "$log_file" 2>/dev/null
+        fi
         
         # Also output to stderr for higher debug levels
         if [ "$DEBUG_LEVEL" -ge 2 ]; then
@@ -92,7 +100,16 @@ error_log() {
     
     # Both stderr and error log
     echo -e "${RED}[ERROR]${NC} $log_entry" >&2
-    echo "$log_entry" >> "$DEBUG_LOG_DIR/errors.log"
+    
+    # Ensure DEBUG_LOG_DIR is set before writing
+    if [ -z "$DEBUG_LOG_DIR" ]; then
+        DEBUG_LOG_DIR="/tmp/claude-gemini-bridge-logs"
+        mkdir -p "$DEBUG_LOG_DIR" 2>/dev/null
+    fi
+    
+    if [ -n "$DEBUG_LOG_DIR" ]; then
+        echo "$log_entry" >> "$DEBUG_LOG_DIR/errors.log" 2>/dev/null
+    fi
 }
 
 # Start performance measurement

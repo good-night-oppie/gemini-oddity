@@ -91,7 +91,7 @@ AVAILABLE_PROVIDERS=()
 for provider_script in "$SCRIPT_DIR/providers"/*-provider.sh; do
     if [ -f "$provider_script" ] && [ "$provider_script" != "$SCRIPT_DIR/providers/base-provider.sh" ]; then
         source "$provider_script"
-        local provider_name=$(basename "$provider_script" | sed 's/-provider.sh//')
+        provider_name=$(basename "$provider_script" | sed 's/-provider.sh//')
         provider_name="${provider_name//-/_}"
         AVAILABLE_PROVIDERS+=("$provider_name")
         debug_log 2 "Loaded provider: $provider_name"
@@ -99,7 +99,7 @@ for provider_script in "$SCRIPT_DIR/providers"/*-provider.sh; do
 done
 
 # Set dynamic paths that aren't set in config
-if [ -z "$CAPTURE_DIR" ]; then
+if [ -z "${CAPTURE_DIR:-}" ]; then
     export CAPTURE_DIR="$SCRIPT_DIR/../debug/captured"
 fi
 

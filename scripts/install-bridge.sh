@@ -63,6 +63,14 @@ check_gemini_auth() {
     local auth_status="unknown"
     local oauth_file="$HOME/.gemini/oauth_creds.json"
     
+    # First, try to actually use Gemini to see if it works
+    if echo "test" | gemini -p "Say OK" >/dev/null 2>&1; then
+        auth_status="valid"
+        log "debug" "Gemini is working properly"
+        echo "$auth_status"
+        return 0
+    fi
+    
     if [[ -f "$oauth_file" ]]; then
         # Check token expiry
         local expiry=$(jq -r '.exp // 0' "$oauth_file" 2>/dev/null || echo "0")
@@ -99,16 +107,16 @@ setup_gemini_oauth() {
     
     read -p "Press Enter to start OAuth setup (or Ctrl+C to skip)... "
     
-    # Run Gemini auth
-    log "step" "Opening browser for Google OAuth..."
-    if gemini auth login; then
+    # Run Gemini auth (Note: Gemini CLI doesn't have auth login command)
+    log "step" "Testing Gemini connection..."
+    if echo "OK" | gemini -p "test" >/dev/null 2>&1; then
         # Verify success
         if [[ -f "$HOME/.gemini/oauth_creds.json" ]]; then
             log "info" "OAuth setup successful!"
             
             # Test with a simple call
             log "step" "Testing Gemini connection..."
-            if gemini -p "test" -q "Say 'OK'" >/dev/null 2>&1; then
+            if echo "Say OK" | gemini -p "test" >/dev/null 2>&1; then
                 log "info" "Gemini connection verified!"
                 return 0
             else
@@ -142,7 +150,7 @@ ensure_gemini_authenticated() {
         log "step" "Refreshing Gemini OAuth token..."
         
         # Trigger refresh with a simple API call
-        if gemini -p "test" -q "1+1" >/dev/null 2>&1; then
+        if echo "1+1" | gemini -p "Calculate" >/dev/null 2>&1; then
             log "info" "Token refreshed successfully"
             return 0
         else
