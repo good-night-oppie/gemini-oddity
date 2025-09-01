@@ -21,7 +21,67 @@ source "$SCRIPT_DIR/lib/path-converter.sh"
 source "$SCRIPT_DIR/lib/json-parser.sh"
 source "$SCRIPT_DIR/lib/gemini-wrapper.sh"
 source "$SCRIPT_DIR/lib/oauth-handler.sh"
+source "$SCRIPT_DIR/lib/oauth-manager.sh"
 source "$SCRIPT_DIR/lib/enhanced-delegation.sh"
+
+# Notification configuration
+export CLAUDE_BRIDGE_NOTIFY="${CLAUDE_BRIDGE_NOTIFY:-subtle}"
+BRIDGE_STATUS_LOG="${BRIDGE_STATUS_LOG:-$HOME/.claude/bridge-status.log}"
+
+# Enhanced notification function
+notify_user() {
+    local level="$1"
+    local message="$2"
+    local timestamp=$(date -Iseconds)
+    
+    # Always log to status file
+    echo "$timestamp [$level] $message" >> "$BRIDGE_STATUS_LOG"
+    
+    # Terminal notifications based on level
+    case "$CLAUDE_BRIDGE_NOTIFY" in
+        quiet)
+            # No terminal output
+            ;;
+        subtle)
+            # Minimal indicators
+            case "$level" in
+                DELEGATE)
+                    echo -e "\033[2m🌉\033[0m" >&2
+                    ;;
+                ERROR|CRITICAL)
+                    echo -e "\033[0;31m⚠️ Bridge: $message\033[0m" >&2
+                    ;;
+            esac
+            ;;
+        verbose)
+            # Full notifications
+            case "$level" in
+                ACTIVE)
+                    echo -e "\033[0;32m🌉 Bridge: $message\033[0m" >&2
+                    ;;
+                DELEGATE)
+                    echo -e "\033[0;34m🌉 Bridge: $message\033[0m" >&2
+                    ;;
+                SUCCESS)
+                    echo -e "\033[0;32m🌉 Bridge: $message\033[0m" >&2
+                    ;;
+                CACHE)
+                    echo -e "\033[2m🌉 Bridge: $message\033[0m" >&2
+                    ;;
+                ERROR)
+                    echo -e "\033[0;31m🌉 Bridge: $message\033[0m" >&2
+                    ;;
+                *)
+                    echo -e "🌉 Bridge: $message" >&2
+                    ;;
+            esac
+            ;;
+        debug)
+            # Everything with timestamps
+            echo -e "\033[2m🌉 [DEBUG][$timestamp][$level] $message\033[0m" >&2
+            ;;
+    esac
+}
 
 # Initialize provider system
 source "$SCRIPT_DIR/providers/base-provider.sh"
