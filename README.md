@@ -1,8 +1,8 @@
-# Claude-Gemini Bridge with OAuth 2.0 Authentication
+# Gemini Oddity with OAuth 2.0 Authentication
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/yourusername/claude-gemini-bridge)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/yourusername/gemini-oddity)
 [![Security](https://img.shields.io/badge/security-OAuth%202.0-green.svg)](docs/SECURITY.md)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](.github/workflows/test.yml)
 [![Coverage](https://img.shields.io/badge/coverage-85%25-yellowgreen.svg)](test/reports/coverage.json)
@@ -16,7 +16,7 @@
 
 ## 🚀 What's New in v2.0
 
-We've transformed the Claude-Gemini Bridge into an **enterprise-ready solution** with comprehensive OAuth 2.0 authentication, replacing simple API keys with a secure, token-based authentication system that follows industry best practices.
+We've transformed Gemini Oddity into an **enterprise-ready solution** with comprehensive OAuth 2.0 authentication, replacing simple API keys with a secure, token-based authentication system that follows industry best practices.
 
 ### Major Innovations
 
@@ -30,7 +30,7 @@ We've transformed the Claude-Gemini Bridge into an **enterprise-ready solution**
 
 ## 🎯 Original Power + Enhanced Security
 
-The Claude-Gemini Bridge automatically delegates complex code analysis tasks from Claude Code to Google Gemini, combining Claude's reasoning capabilities with Gemini's large context processing power. **Now with OAuth 2.0, it's secure enough for enterprise deployment.**
+Gemini Oddity automatically delegates complex code analysis tasks from Claude Code to Google Gemini, combining Claude's reasoning capabilities with Gemini's large context processing power. **Now with OAuth 2.0, it's secure enough for enterprise deployment.**
 
 ### How It Works
 
@@ -95,8 +95,8 @@ graph TB
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/claude-gemini-bridge
-cd claude-gemini-bridge
+git clone https://github.com/yourusername/gemini-oddity
+cd gemini-oddity
 
 # Run the interactive setup wizard
 ./setup/interactive-setup.sh
@@ -149,7 +149,7 @@ Our OAuth implementation is enterprise-ready:
 ./hooks/lib/oauth-handler.sh refresh
 
 # View token expiration
-cat ~/.claude-gemini-bridge/tokens/token_info.json | jq .expires_at
+cat ~/.gemini-oddity/tokens/token_info.json | jq .expires_at
 ```
 
 ### Security Features
@@ -204,7 +204,7 @@ cat ~/.claude-gemini-bridge/tokens/token_info.json | jq .expires_at
 
 ```
 ╔════════════════════════════════════════════╗
-║     Claude-Gemini Bridge Setup Wizard      ║
+║        Gemini Oddity Setup Wizard          ║
 ╠════════════════════════════════════════════╣
 ║                                            ║
 ║  Welcome! Let's configure your bridge.    ║
@@ -243,7 +243,7 @@ cat ~/.claude-gemini-bridge/tokens/token_info.json | jq .expires_at
 ### OAuth Configuration
 
 ```json
-// ~/.claude-gemini-bridge/config.json
+// ~/.gemini-oddity/config.json
 {
   "auth_type": "oauth",
   "provider": "gemini",
@@ -333,7 +333,7 @@ Our GitHub Actions pipeline ensures quality:
 ./hooks/lib/oauth-handler.sh status
 
 # Verify config
-cat ~/.claude-gemini-bridge/config.json | jq '.oauth'
+cat ~/.gemini-oddity/config.json | jq '.oauth'
 
 # Force refresh
 ./hooks/lib/oauth-handler.sh refresh --force
@@ -349,10 +349,10 @@ cat ~/.claude-gemini-bridge/config.json | jq '.oauth'
 
 ```bash
 # Check expiry
-cat ~/.claude-gemini-bridge/tokens/token_info.json | jq .expires_at
+cat ~/.gemini-oddity/tokens/token_info.json | jq .expires_at
 
 # Clear tokens
-rm -rf ~/.claude-gemini-bridge/tokens/*
+rm -rf ~/.gemini-oddity/tokens/*
 
 # Re-authenticate
 ./setup/interactive-setup.sh --reauth
@@ -412,8 +412,8 @@ We welcome contributions! See [Contributing Guidelines](CONTRIBUTING.md).
 
 ```bash
 # Fork and clone
-git clone https://github.com/yourusername/claude-gemini-bridge
-cd claude-gemini-bridge
+git clone https://github.com/yourusername/gemini-oddity
+cd gemini-oddity
 
 # Create feature branch
 git checkout -b feature/your-feature
@@ -442,7 +442,7 @@ git checkout -b feature/your-feature
 
 ## 🔒 Security
 
-The Claude-Gemini Bridge v2.0 implements enterprise-grade security:
+Gemini Oddity v2.0 implements enterprise-grade security:
 
 - **OAuth 2.0 with PKCE**: Industry-standard authentication
 - **AES-256-CBC Encryption**: Military-grade encryption
@@ -459,7 +459,7 @@ MIT License - see [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-Built on the original Claude-Gemini Bridge with major enhancements:
+Built on the original Gemini Oddity architecture with major enhancements:
 
 - **v1.0**: Original bridge concept and implementation
 - **v2.0**: Complete OAuth 2.0 system, enterprise security, comprehensive testing
@@ -474,12 +474,12 @@ Special thanks to:
 
 <div align="center">
 
-**Claude-Gemini Bridge v2.0** - Secure, Fast, Enterprise-Ready
+**Gemini Oddity v2.0** - Secure, Fast, Enterprise-Ready
 
 Made with ❤️ for the Claude Code community
 
-[Report Bug](https://github.com/yourusername/claude-gemini-bridge/issues) • 
-[Request Feature](https://github.com/yourusername/claude-gemini-bridge/issues) • 
+[Report Bug](https://github.com/yourusername/gemini-oddity/issues) • 
+[Request Feature](https://github.com/yourusername/gemini-oddity/issues) • 
 [Documentation](./docs/) •
 [Security](./docs/SECURITY.md)
 

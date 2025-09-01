@@ -1,7 +1,7 @@
 #!/bin/bash
-# ABOUTME: Per-project uninstaller for Claude-Gemini Bridge
+# ABOUTME: Per-project uninstaller for Gemini Oddity
 
-echo "🗑️  Claude-Gemini Bridge Uninstaller"
+echo "🗑️  Gemini Oddity Uninstaller"
 echo "===================================="
 echo ""
 
@@ -29,7 +29,7 @@ log() {
 
 # Remove hooks from Claude settings
 remove_hooks() {
-    log "info" "Removing Claude-Gemini Bridge hooks..."
+    log "info" "Removing Gemini Oddity hooks..."
     
     if [ ! -f "$CLAUDE_SETTINGS_FILE" ]; then
         log "warn" "Claude settings file not found: $CLAUDE_SETTINGS_FILE"
@@ -87,7 +87,7 @@ remove_directory() {
 
 # Main uninstall
 main() {
-    echo "This will remove the Claude-Gemini Bridge from this project."
+    echo "This will remove the Gemini Oddity from this project."
     echo "Project directory: $(dirname "$BRIDGE_DIR")"
     echo ""
     read -p "Continue with uninstallation? (y/N): " confirm

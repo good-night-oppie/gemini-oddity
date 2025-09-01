@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude-Gemini Bridge Complete System Installer
+# Gemini Oddity Complete System Installer
 # Installs bridge, hooks, PR monitoring, and GitHub Actions
 
 set -euo pipefail
@@ -15,7 +15,7 @@ readonly NC='\033[0m'
 
 # Configuration
 readonly SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-readonly DEFAULT_TARGET="$HOME/workspace/claude-gemini-bridge"
+readonly DEFAULT_TARGET="$HOME/workspace/gemini-oddity"
 readonly TARGET_DIR="${1:-$DEFAULT_TARGET}"
 readonly CLAUDE_SETTINGS_FILE="$HOME/.claude/settings.json"
 readonly BACKUP_DIR="$HOME/.claude/backups"
@@ -33,7 +33,7 @@ show_banner() {
     echo -e "${CYAN}"
     echo "╔════════════════════════════════════════════════════════════╗"
     echo "║                                                            ║"
-    echo "║     Claude-Gemini Bridge Complete System Installer        ║"
+    echo "║     Gemini Oddity Complete System Installer        ║"
     echo "║                                                            ║"
     echo "║  🚀 Bridge + 🎯 PR Review + 🔄 CI Monitor + 🤖 Automation  ║"
     echo "║                                                            ║"
@@ -104,7 +104,7 @@ interactive_setup() {
     echo -e "${CYAN}Select components to install:${NC}"
     
     # Component selection
-    read -p "1. Install Claude-Gemini Bridge? (Y/n): " install_bridge
+    read -p "1. Install Gemini Oddity? (Y/n): " install_bridge
     INSTALL_BRIDGE=${install_bridge:-Y}
     INSTALL_BRIDGE=${INSTALL_BRIDGE^^}
     
@@ -162,7 +162,7 @@ interactive_setup() {
     echo -e "${YELLOW}=== Installation Summary ===${NC}"
     echo "  Target directory: $TARGET_DIR"
     echo "  Components:"
-    [[ "$INSTALL_BRIDGE" == "Y" ]] && echo "    ✓ Claude-Gemini Bridge"
+    [[ "$INSTALL_BRIDGE" == "Y" ]] && echo "    ✓ Gemini Oddity"
     [[ "$INSTALL_PR_MONITOR" == "Y" ]] && echo "    ✓ PR Review Monitor"
     [[ "$INSTALL_HOOKS" == "Y" ]] && echo "    ✓ CI/CD Monitoring"
     [[ "$INSTALL_GITHUB_ACTIONS" == "Y" ]] && echo "    ✓ GitHub Actions"
@@ -198,7 +198,7 @@ install_bridge_files() {
         return 0
     fi
     
-    log step "Installing Claude-Gemini Bridge..."
+    log step "Installing Gemini Oddity..."
     
     # Create target directory
     mkdir -p "$TARGET_DIR"
@@ -369,7 +369,7 @@ create_helper_scripts() {
     # Create activation script
     cat > "$TARGET_DIR/activate.sh" << 'EOF'
 #!/bin/bash
-# Activate Claude-Gemini Bridge helpers
+# Activate Gemini Oddity helpers
 
 BRIDGE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -382,7 +382,7 @@ alias cgb-status="$BRIDGE_DIR/hooks/pr-review/pr-monitor.sh status"
 
 # Functions
 cgb-help() {
-    echo "Claude-Gemini Bridge Commands:"
+    echo "Gemini Oddity Commands:"
     echo "  cgb-monitor <pr> [complexity] - Monitor PR review"
     echo "  cgb-status                    - Show active monitors"
     echo "  cgb-test                      - Run tests"
@@ -390,7 +390,7 @@ cgb-help() {
     echo "  cgb-cache-clear              - Clear cache"
 }
 
-echo "Claude-Gemini Bridge activated. Type 'cgb-help' for commands."
+echo "Gemini Oddity activated. Type 'cgb-help' for commands."
 EOF
     
     chmod +x "$TARGET_DIR/activate.sh"
@@ -434,7 +434,7 @@ show_summary() {
     echo ""
     
     echo -e "${CYAN}✨ Features Installed:${NC}"
-    [[ "$INSTALL_BRIDGE" == "Y" ]] && echo "   ✓ Claude-Gemini Bridge with $DELEGATION_TOOLS delegation"
+    [[ "$INSTALL_BRIDGE" == "Y" ]] && echo "   ✓ Gemini Oddity with $DELEGATION_TOOLS delegation"
     [[ "$INSTALL_PR_MONITOR" == "Y" ]] && echo "   ✓ PR Review Monitor with debate protocol"
     [[ "$INSTALL_HOOKS" == "Y" ]] && echo "   ✓ CI/CD Monitoring with auto-fix"
     [[ "$INSTALL_GITHUB_ACTIONS" == "Y" ]] && echo "   ✓ GitHub Actions workflows"
@@ -465,7 +465,7 @@ show_summary() {
         echo ""
     fi
     
-    echo -e "${GREEN}Happy coding with Claude-Gemini Bridge! 🤖${NC}"
+    echo -e "${GREEN}Happy coding with Gemini Oddity! 🤖${NC}"
 }
 
 # Main installation flow

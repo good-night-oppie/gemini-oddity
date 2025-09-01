@@ -1,6 +1,6 @@
-# Contributing to Claude-Gemini Bridge
+# Contributing to Gemini Oddity
 
-Thank you for your interest in contributing to the Claude-Gemini Bridge! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to the Gemini Oddity! This document provides guidelines and information for contributors.
 
 ## 🚀 Getting Started
 
@@ -17,8 +17,8 @@ Thank you for your interest in contributing to the Claude-Gemini Bridge! This do
 1. **Fork the repository**
    ```bash
    # Fork on GitHub, then clone your fork
-   git clone https://github.com/your-username/claude-gemini-bridge.git
-   cd claude-gemini-bridge
+   git clone https://github.com/your-username/gemini-oddity.git
+   cd gemini-oddity
    ```
 
 2. **Set up development environment**
@@ -229,7 +229,7 @@ Screenshots, examples, references, etc.
 Understanding the codebase structure:
 
 ```
-claude-gemini-bridge/
+gemini-oddity/
 ├── hooks/
 │   ├── gemini-bridge.sh       # Main hook script
 │   ├── lib/
@@ -362,4 +362,4 @@ We use [Semantic Versioning](https://semver.org/):
 4. Tag release after merge
 5. Update installation documentation
 
-Thank you for contributing to the Claude-Gemini Bridge! 🎉
+Thank you for contributing to the Gemini Oddity! 🎉

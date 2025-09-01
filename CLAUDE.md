@@ -1,10 +1,10 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with the Claude-Gemini Bridge repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with the Gemini Oddity repository.
 
 ## Project Overview
 
-The Claude-Gemini Bridge is an intelligent hook system that seamlessly integrates Claude Code with Google Gemini for large-scale code analysis tasks. When Claude Code encounters complex analysis requests, the bridge automatically delegates appropriate tasks to Gemini while maintaining Claude's control over the conversation flow.
+Gemini Oddity is an intelligent hook system that seamlessly integrates Claude Code with Google Gemini for large-scale code analysis tasks. When Claude Code encounters complex analysis requests, the bridge automatically delegates appropriate tasks to Gemini while maintaining Claude's control over the conversation flow.
 
 ## Architecture
 

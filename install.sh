@@ -1,7 +1,7 @@
 #!/bin/bash
-# ABOUTME: Simplified installer for Claude-Gemini Bridge that works in current directory
+# ABOUTME: Simplified installer for Gemini Oddity that works in current directory
 
-echo "🚀 Claude-Gemini Bridge Installer"
+echo "🚀 Gemini Oddity Installer"
 echo "=================================="
 echo ""
 
@@ -14,7 +14,7 @@ NC='\033[0m'
 
 # Global variables
 SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TARGET_DIR="$(pwd)/.claude-gemini-bridge"
+TARGET_DIR="$(pwd)/.gemini-oddity"
 CLAUDE_SETTINGS_FILE="$HOME/.claude/settings.json"
 BACKUP_SUFFIX=$(date +%Y%m%d_%H%M%S)
 
@@ -156,10 +156,10 @@ configure_claude_hooks() {
     local hook_matcher="${user_tools:-Read|Grep|Glob|Task}"
     log "info" "Configuring hooks for tools: $hook_matcher"
     
-    # Check for any existing Claude-Gemini Bridge installation
+    # Check for any existing Gemini Oddity installation
     if [ -f "$CLAUDE_SETTINGS_FILE" ]; then
         if grep -q "gemini-bridge.sh" "$CLAUDE_SETTINGS_FILE" 2>/dev/null; then
-            log "warn" "Existing Claude-Gemini Bridge installation detected!"
+            log "warn" "Existing Gemini Oddity installation detected!"
             
             # Show current hook path
             local current_path=$(grep -o '[^"]*gemini-bridge.sh' "$CLAUDE_SETTINGS_FILE" 2>/dev/null | head -1)
@@ -249,7 +249,7 @@ update_existing_hook() {
 
 # Remove existing gemini-bridge hooks
 remove_existing_hooks() {
-    log "debug" "Removing existing Claude-Gemini Bridge hooks..."
+    log "debug" "Removing existing Gemini Oddity hooks..."
     
     local cleaned_config=$(jq '
         .hooks.PreToolUse = (.hooks.PreToolUse // []) | 
@@ -386,7 +386,7 @@ show_summary() {
 
 # Main installation
 main() {
-    echo "This script will install the Claude-Gemini Bridge in your current project."
+    echo "This script will install the Gemini Oddity in your current project."
     echo ""
     echo "Current directory: $(pwd)"
     echo "Bridge will be installed in: $TARGET_DIR"

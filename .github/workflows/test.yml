@@ -57,8 +57,8 @@ jobs:
     
     - name: Setup test environment
       run: |
-        mkdir -p ~/.claude-gemini-bridge/tokens
-        echo '{"auth_type":"oauth","provider":"test"}' > ~/.claude-gemini-bridge/config.json
+        mkdir -p ~/.gemini-oddity/tokens
+        echo '{"auth_type":"oauth","provider":"test"}' > ~/.gemini-oddity/config.json
     
     - name: Run integration tests
       run: |

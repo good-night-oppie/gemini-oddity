@@ -87,7 +87,7 @@ jobs:
           
           # Review prompt specialized for shell scripts
           direct_prompt: |
-            Please review this Pull Request for the Claude-Gemini Bridge project.
+            Please review this Pull Request for the Gemini Oddity project.
             
             Focus on:
             1. **Shell Script Quality**:

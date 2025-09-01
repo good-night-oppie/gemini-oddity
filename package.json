@@ -1,5 +1,5 @@
 {
-  "name": "claude-gemini-bridge",
+  "name": "gemini-oddity",
   "version": "1.0.0",
   "description": "<div align=\"center\">",
   "main": "index.js",
@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EdwardTang/claude-gemini-bridge.git"
+    "url": "git+https://github.com/EdwardTang/gemini-oddity.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/EdwardTang/claude-gemini-bridge/issues"
+    "url": "https://github.com/EdwardTang/gemini-oddity/issues"
   },
-  "homepage": "https://github.com/EdwardTang/claude-gemini-bridge#readme"
+  "homepage": "https://github.com/EdwardTang/gemini-oddity#readme"
 }
