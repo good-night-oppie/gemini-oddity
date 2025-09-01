@@ -220,4 +220,7 @@ dev-debug.log
 
 # Task files
 # tasks.json
-# tasks/ 
+# tasks/
+
+# Context directory for Claude
+.context/ 

@@ -21,6 +21,7 @@ source "$SCRIPT_DIR/lib/path-converter.sh"
 source "$SCRIPT_DIR/lib/json-parser.sh"
 source "$SCRIPT_DIR/lib/gemini-wrapper.sh"
 source "$SCRIPT_DIR/lib/oauth-handler.sh"
+source "$SCRIPT_DIR/lib/enhanced-delegation.sh"
 
 # Initialize provider system
 source "$SCRIPT_DIR/providers/base-provider.sh"
@@ -337,8 +338,8 @@ should_delegate_to_provider() {
 # Main Execution with Provider Support
 # ============================================================================
 
-# Check if we should delegate to a provider
-if should_delegate_to_provider "$TOOL_NAME" "$FILES" "$ORIGINAL_PROMPT"; then
+# Check if we should delegate to a provider (using enhanced logic)
+if should_delegate_to_provider_enhanced "$TOOL_NAME" "$FILES" "$ORIGINAL_PROMPT"; then
     debug_log 1 "Delegating to provider for tool: $TOOL_NAME"
     
     # Calculate metrics for provider selection
