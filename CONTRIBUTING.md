@@ -1,6 +1,6 @@
 # Contributing to Gemini Oddity
 
-Thank you for your interest in contributing to the Gemini Oddity! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to Gemini Oddity! This document provides comprehensive guidelines for contributing to our OAuth-enhanced Claude Code and Google Gemini integration bridge.
 
 ## 🚀 Getting Started
 
@@ -136,15 +136,28 @@ test_new_feature() {
 # Run all tests
 ./test/test-runner.sh
 
+# Run specific test suites
+./test/unit/test-oauth-handler.sh
+./test/unit/test-secure-token-storage.sh
+./test/integration/test-oauth-flow.sh
+./test/security/test-security-audit.sh
+
 # Test specific components
 ./hooks/lib/path-converter.sh
 ./hooks/lib/json-parser.sh
+./hooks/lib/oauth-handler.sh
 
 # Interactive testing
 ./test/manual-test.sh
 
 # Check shell script quality
 shellcheck hooks/*.sh hooks/lib/*.sh
+
+# Run security audit
+./hooks/lib/security-audit.sh
+
+# Performance benchmarks
+./test/performance/test-performance-benchmarks.sh
 ```
 
 ### 4. Documentation
@@ -230,22 +243,47 @@ Understanding the codebase structure:
 
 ```
 gemini-oddity/
+├── gemini-oddity              # Main CLI entry point
+├── install.sh                 # Global installation script
+├── project-uninstall.sh       # Per-project uninstallation
+├── .gemini-oddity/            # Per-project installation directory
 ├── hooks/
-│   ├── gemini-bridge.sh       # Main hook script
+│   ├── gemini-bridge.sh       # Main delegation hook
+│   ├── unified-automation.sh  # PR automation system
+│   ├── universal-router.sh    # Multi-provider routing
 │   ├── lib/
+│   │   ├── oauth-handler.sh   # OAuth 2.0 implementation
+│   │   ├── token-storage.sh   # Secure token management
+│   │   ├── encryption-core.sh # AES-256 encryption
 │   │   ├── path-converter.sh  # @ path conversion
 │   │   ├── json-parser.sh     # JSON handling
+│   │   ├── config-manager.sh  # Configuration management
+│   │   ├── security-audit.sh  # Security validation
 │   │   ├── debug-helpers.sh   # Logging/debugging
 │   │   └── gemini-wrapper.sh  # Gemini API interface
+│   ├── providers/
+│   │   ├── base-provider.sh   # Provider interface
+│   │   └── gemini-cli-provider.sh # Gemini CLI implementation
 │   └── config/
-│       └── debug.conf         # Configuration
+│       └── debug.conf         # Debug configuration
 ├── test/
-│   ├── test-runner.sh         # Automated tests
+│   ├── unit/                  # Unit tests
+│   ├── integration/           # Integration tests
+│   ├── security/              # Security audits
+│   ├── performance/           # Performance benchmarks
+│   ├── test-runner.sh         # Main test executor
 │   ├── manual-test.sh         # Interactive testing
 │   └── mock-tool-calls/       # Test data
 ├── docs/
+│   ├── API.md                 # API documentation
+│   ├── SECURITY.md            # Security guidelines
+│   ├── MIGRATION_GUIDE.md     # Migration from v1
+│   ├── ENHANCED-INSTALLER.md  # Installation guide
+│   ├── ADVANCED_HOOKS.md      # Advanced features
 │   └── TROUBLESHOOTING.md     # Debug guide
-└── install.sh                 # Installation script
+└── scripts/
+    ├── init-gemini-delegation.sh # Setup helpers
+    └── install-bridge.sh      # Bridge installer
 ```
 
 ## 🔍 Debugging Guidelines
@@ -326,7 +364,7 @@ Contributors will be recognized in:
 - README.md acknowledgments
 - Release notes
 - GitHub contributor graphs
-- Optional Twitter mentions (@claude_bridge)
+- Optional social media mentions
 
 ## 📞 Getting Help
 
@@ -362,4 +400,27 @@ We use [Semantic Versioning](https://semver.org/):
 4. Tag release after merge
 5. Update installation documentation
 
-Thank you for contributing to the Gemini Oddity! 🎉
+## 🔐 Security Considerations
+
+When contributing code that handles sensitive data:
+
+1. **OAuth Tokens**: Never log or expose OAuth tokens
+2. **Encryption**: Use the provided encryption-core.sh for sensitive data
+3. **File Exclusions**: Respect the security patterns (*.secret, *.key, etc.)
+4. **Token Storage**: Always use token-storage.sh for credential management
+5. **Audit Trail**: Ensure security-audit.sh passes for your changes
+
+## 🚢 New Features Checklist
+
+For major feature additions:
+
+- [ ] Feature documented in docs/
+- [ ] Unit tests with >80% coverage
+- [ ] Integration tests for external interactions
+- [ ] Security audit passed
+- [ ] Performance benchmarks included
+- [ ] Migration guide updated (if breaking changes)
+- [ ] CLAUDE.md updated for AI assistant context
+- [ ] Example usage in README.md
+
+Thank you for contributing to Gemini Oddity! 🎉

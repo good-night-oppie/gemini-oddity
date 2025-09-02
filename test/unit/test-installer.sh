@@ -278,19 +278,19 @@ test_cli_commands() {
     setup_test_env
     
     # Make CLI executable
-    chmod +x "$PROJECT_ROOT/claude-bridge"
+    chmod +x "$PROJECT_ROOT/gemini-oddity"
     
     # Test help command
-    local output=$("$PROJECT_ROOT/claude-bridge" help 2>&1)
+    local output=$("$PROJECT_ROOT/gemini-oddity" help 2>&1)
     assert_contains "$output" "Gemini Oddity CLI" "Help should show title"
     assert_contains "$output" "install" "Help should list install command"
     
     # Test version command
-    output=$("$PROJECT_ROOT/claude-bridge" version 2>&1)
+    output=$("$PROJECT_ROOT/gemini-oddity" version 2>&1)
     assert_contains "$output" "2.0.0" "Version should show CLI version"
     
     # Test status command (with minimal setup)
-    output=$("$PROJECT_ROOT/claude-bridge" status 2>&1 || true)
+    output=$("$PROJECT_ROOT/gemini-oddity" status 2>&1 || true)
     assert_contains "$output" "Gemini Oddity Status" "Status should show header"
     
     teardown_test_env

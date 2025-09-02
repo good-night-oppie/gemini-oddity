@@ -79,7 +79,7 @@
      │                                                       │
      │ - Package gemini-oddity as npm module          │
      │ - Use npm link for local development                  │
-     │ - Global CLI command: claude-bridge install in any    │
+     │ - Global CLI command: gemini-oddity install in any    │
  │ project                                               │
      │ - Automatic project detection and configuration       │
      │                                                       │
@@ -114,7 +114,7 @@
      │   - Support multiple project registrations            │
      │ 3. Create npm package structure:                      │
      │ gemini-oddity/                                 │
-     │ ├── package.json (with bin: claude-bridge)            │
+     │ ├── package.json (with bin: gemini-oddity)            │
      │ ├── cli.js (installation CLI)                         │
      │ ├── universal-router/                                 │
      │ │   └── router.sh                                     │
@@ -127,11 +127,11 @@
      │   - Auto-configure based on project type              │
      │   - Support workspace/monorepo structures             │
      │ 5. Create uninstall/cleanup commands:                 │
-     │   - claude-bridge uninstall - removes from current    │
+     │   - gemini-oddity uninstall - removes from current    │
      │ project                                               │
-     │   - claude-bridge clean - removes orphaned            │
+     │   - gemini-oddity clean - removes orphaned            │
      │ registrations                                         │
-     │   - claude-bridge list - shows all registered projects│
+     │   - gemini-oddity list - shows all registered projects│
      │                                                       │
      │ 5. Benefits                                           │
      │                                                       │
@@ -167,7 +167,7 @@
   1. User runs in any project directory:                                
   npx gemini-oddity install                                      
   # or if installed globally:       
-  claude-bridge install             
+  gemini-oddity install             
   2. The command automatically:                                         
     - Detects current working directory (pwd)                           
     - Installs bridge files to ./.gemini-oddity/                 
@@ -179,20 +179,20 @@
   Command Suite   
 
   # In any project directory - auto-registers THIS project              
-  claude-bridge install             
+  gemini-oddity install             
 
   # Manual registration (if needed)                                     
-  claude-bridge register [path]  # Register project at                  
+  gemini-oddity register [path]  # Register project at                  
   path (defaults to pwd)            
 
   # Management commands             
-  claude-bridge list             # List all registered                  
+  gemini-oddity list             # List all registered                  
   projects        
-  claude-bridge unregister [path] # Remove project from                 
+  gemini-oddity unregister [path] # Remove project from                 
   registry        
-  claude-bridge status           # Show if current                      
+  gemini-oddity status           # Show if current                      
   directory is registered                                               
-  claude-bridge clean            # Remove orphaned                      
+  gemini-oddity clean            # Remove orphaned                      
   registrations   
 
   Registry Structure                
@@ -238,8 +238,8 @@
   - Project isolation - each project has independent                    
   configuration                                                         
   - Easy migration - existing projects just need to run                 
-  claude-bridge register            
-  - Clean uninstall - claude-bridge uninstall                           
+  gemini-oddity register            
+  - Clean uninstall - gemini-oddity uninstall                           
   auto-unregisters                  
 
   Example Workflow                  
@@ -260,7 +260,7 @@
   # Auto-registers this project too                                     
 
   # Check status anytime:           
-  claude-bridge list                
+  gemini-oddity list                
   # Output:       
   # Registered projects:            
   # ✓ /home/dev/projects/my-app (v2.0.0)                                
@@ -361,7 +361,7 @@ another pain point for the users is that they don't know
 
   Add a quick health check:         
 
-  claude-bridge status              
+  gemini-oddity status              
 
   # Output:       
   Gemini Oddity Status       
@@ -500,7 +500,7 @@ another pain point for the users is that they don't know
 
   1. Installation Flow with OAuth Check                                 
 
-  # When user runs: claude-bridge install                               
+  # When user runs: gemini-oddity install                               
                                                                         
   1. Check Gemini CLI installation                                      
   2. Check OAuth authentication status                                  
@@ -700,7 +700,7 @@ setup_token_refresh_cron() {
 
   5. User-Friendly Status Command
 
-  claude-bridge auth-status
+  gemini-oddity auth-status
 
   # Output:
   Gemini Oddity Authentication Status

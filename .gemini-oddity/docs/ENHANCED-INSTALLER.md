@@ -64,28 +64,28 @@ cd gemini-oddity
 
 ```bash
 # Install in current directory
-claude-bridge install
+gemini-oddity install
 
 # Check status
-claude-bridge status
+gemini-oddity status
 
 # List all projects
-claude-bridge list
+gemini-oddity list
 
 # View activity logs
-claude-bridge logs
+gemini-oddity logs
 
 # Manage OAuth
-claude-bridge auth-status
-claude-bridge auth-setup
-claude-bridge auth-refresh
+gemini-oddity auth-status
+gemini-oddity auth-setup
+gemini-oddity auth-refresh
 
 # Enable/disable for current project
-claude-bridge enable
-claude-bridge disable
+gemini-oddity enable
+gemini-oddity disable
 
 # Uninstall from current project
-claude-bridge uninstall
+gemini-oddity uninstall
 ```
 
 ### Notification Levels
@@ -164,21 +164,21 @@ The OAuth manager handles:
 ```bash
 # Project A - Full delegation
 cd ~/projects/web-app
-claude-bridge install
+gemini-oddity install
 # Choose: All tools (Read, Grep, Glob, Task)
 
 # Project B - Task-only delegation
 cd ~/projects/api-server
-claude-bridge install
+gemini-oddity install
 # Choose: Task operations only
 
 # Project C - Custom selection
 cd ~/projects/data-pipeline
-claude-bridge install
+gemini-oddity install
 # Choose: Custom (Read|Task)
 
 # View all projects
-claude-bridge list
+gemini-oddity list
 ```
 
 ### Result
@@ -219,29 +219,29 @@ gemini -p "test" -q "1"
 
 ```bash
 # Check current status
-claude-bridge auth-status
+gemini-oddity auth-status
 
 # Manual refresh
-claude-bridge auth-refresh
+gemini-oddity auth-refresh
 
 # Complete re-authentication
-claude-bridge auth-setup
+gemini-oddity auth-setup
 ```
 
 #### Bridge Not Activating
 
 ```bash
 # Verify installation
-claude-bridge status
+gemini-oddity status
 
 # Check if project is registered
-claude-bridge list
+gemini-oddity list
 
 # Enable if disabled
-claude-bridge enable
+gemini-oddity enable
 
 # Test components
-claude-bridge test
+gemini-oddity test
 ```
 
 #### Wrong Project Detected
@@ -249,11 +249,11 @@ claude-bridge test
 ```bash
 # Check working directory detection
 pwd
-claude-bridge status
+gemini-oddity status
 
 # Re-register current directory
-claude-bridge uninstall
-claude-bridge install
+gemini-oddity uninstall
+gemini-oddity install
 ```
 
 ### Debug Mode
@@ -268,7 +268,7 @@ export CLAUDE_BRIDGE_NOTIFY=debug
 export DEBUG=1
 
 # View logs
-claude-bridge logs
+gemini-oddity logs
 tail -f ~/.claude/bridge-status.log
 ```
 
@@ -278,7 +278,7 @@ tail -f ~/.claude/bridge-status.log
 
 ```bash
 # From project directory
-claude-bridge uninstall
+gemini-oddity uninstall
 # or
 .gemini-oddity/uninstall.sh
 ```
@@ -287,8 +287,8 @@ claude-bridge uninstall
 
 ```bash
 # Remove all projects
-claude-bridge list | while read project; do
-  claude-bridge uninstall "$project"
+gemini-oddity list | while read project; do
+  gemini-oddity uninstall "$project"
 done
 
 # Remove universal router
@@ -316,7 +316,7 @@ If you have the old bridge installed:
 1. **Backup** existing settings
 2. **Uninstall** old version
 3. **Install** new version with `./scripts/install-bridge.sh`
-4. **Verify** with `claude-bridge status`
+4. **Verify** with `gemini-oddity status`
 
 The new version maintains backward compatibility while adding:
 - Per-project isolation

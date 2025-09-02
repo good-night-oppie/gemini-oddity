@@ -26,7 +26,7 @@ NC='\033[0m'
 show_help() {
     echo -e "${BOLD}Gemini Oddity CLI v$CLI_VERSION${NC}"
     echo ""
-    echo "Usage: claude-bridge <command> [options]"
+    echo "Usage: gemini-oddity <command> [options]"
     echo ""
     echo "Commands:"
     echo "  install              Install bridge in current directory"
@@ -365,7 +365,7 @@ main() {
             ;;
         *)
             echo -e "${RED}Unknown command: $command${NC}"
-            echo "Run 'claude-bridge help' for usage"
+            echo "Run 'gemini-oddity help' for usage"
             exit 1
             ;;
     esac
