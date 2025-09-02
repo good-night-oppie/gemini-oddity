@@ -25,7 +25,7 @@ source "$SCRIPT_DIR/lib/oauth-manager.sh"
 source "$SCRIPT_DIR/lib/enhanced-delegation.sh"
 
 # Notification configuration
-export CLAUDE_BRIDGE_NOTIFY="${CLAUDE_BRIDGE_NOTIFY:-subtle}"
+export GEMINI_ODDITY_NOTIFY="${GEMINI_ODDITY_NOTIFY:-subtle}"
 BRIDGE_STATUS_LOG="${BRIDGE_STATUS_LOG:-$HOME/.claude/bridge-status.log}"
 
 # Enhanced notification function
@@ -38,7 +38,7 @@ notify_user() {
     echo "$timestamp [$level] $message" >> "$BRIDGE_STATUS_LOG"
     
     # Terminal notifications based on level
-    case "$CLAUDE_BRIDGE_NOTIFY" in
+    case "$GEMINI_ODDITY_NOTIFY" in
         quiet)
             # No terminal output
             ;;

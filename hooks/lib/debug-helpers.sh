@@ -116,14 +116,14 @@ error_log() {
 start_timer() {
     local timer_name="$1"
     local start_time=$(date +%s.%N)
-    echo "$start_time" > "/tmp/claude_bridge_timer_$timer_name"
+    echo "$start_time" > "/tmp/gemini_oddity_timer_$timer_name"
     debug_log 3 "Timer started: $timer_name"
 }
 
 # End performance measurement
 end_timer() {
     local timer_name="$1"
-    local timer_file="/tmp/claude_bridge_timer_$timer_name"
+    local timer_file="/tmp/gemini_oddity_timer_$timer_name"
     
     if [ -f "$timer_file" ]; then
         local start_time=$(cat "$timer_file")
@@ -233,7 +233,7 @@ cleanup_debug_files() {
     find "$(get_bridge_dir)/debug/captured" -name "*.json" -mtime +$days_to_keep -delete 2>/dev/null
     
     # Delete old timer files
-    find "/tmp" -name "claude_bridge_timer_*" -mtime +1 -delete 2>/dev/null
+    find "/tmp" -name "gemini_oddity_timer_*" -mtime +1 -delete 2>/dev/null
 }
 
 # Test function for debug helpers
@@ -242,7 +242,7 @@ test_debug_helpers() {
     local failed=0
     
     # Test directory
-    local test_dir="/tmp/claude_bridge_debug_test"
+    local test_dir="/tmp/gemini_oddity_debug_test"
     mkdir -p "$test_dir"
     
     # Test 1: Initialization

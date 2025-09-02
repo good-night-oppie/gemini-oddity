@@ -13,7 +13,7 @@ BRIDGE_STATUS_LOG="$HOME/.claude/bridge-status.log"
 ROUTER_VERSION="2.0.0"
 
 # Notification levels
-export CLAUDE_BRIDGE_NOTIFY="${CLAUDE_BRIDGE_NOTIFY:-subtle}"
+export GEMINI_ODDITY_NOTIFY="${GEMINI_ODDITY_NOTIFY:-subtle}"
 
 # Colors for notifications
 GREEN='\033[0;32m'
@@ -32,7 +32,7 @@ notify_user() {
     # Always log to status file
     echo "$timestamp [$level] $message" >> "$BRIDGE_STATUS_LOG"
     
-    case "$CLAUDE_BRIDGE_NOTIFY" in
+    case "$GEMINI_ODDITY_NOTIFY" in
         quiet)
             # Only log to file, no terminal output
             ;;
@@ -179,7 +179,7 @@ route_to_project_bridge() {
     notify_user "DELEGATE" "Routing $tool_name to project: $(basename "$project_dir")"
     
     # Execute project-specific bridge
-    export CLAUDE_BRIDGE_PROJECT_ROOT="$project_dir"
+    export GEMINI_ODDITY_PROJECT_ROOT="$project_dir"
     bash "$bridge_script"
 }
 
@@ -230,8 +230,8 @@ main() {
 }
 
 # Auto-detect if running interactively and set notification level
-if [[ -t 2 ]] && [[ -z "${CLAUDE_BRIDGE_NOTIFY:-}" ]]; then
-    export CLAUDE_BRIDGE_NOTIFY="subtle"
+if [[ -t 2 ]] && [[ -z "${GEMINI_ODDITY_NOTIFY:-}" ]]; then
+    export GEMINI_ODDITY_NOTIFY="subtle"
 fi
 
 # Handle special commands (for testing/debugging)
@@ -240,7 +240,7 @@ if [[ "${1:-}" == "--status" ]]; then
     echo "━━━━━━━━━━━━━━━━━━━━━━"
     echo "Version: $ROUTER_VERSION"
     echo "Registry: $BRIDGE_REGISTRY"
-    echo "Notification: ${CLAUDE_BRIDGE_NOTIFY:-subtle}"
+    echo "Notification: ${GEMINI_ODDITY_NOTIFY:-subtle}"
     
     if [[ -f "$BRIDGE_REGISTRY" ]]; then
         echo ""

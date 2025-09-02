@@ -9,7 +9,7 @@ GEMINI_RATE_LIMIT="${GEMINI_RATE_LIMIT:-1}"   # 1 second between calls
 GEMINI_MAX_FILES="${GEMINI_MAX_FILES:-20}"    # Max 20 files per call
 
 # Rate limiting file
-RATE_LIMIT_FILE="/tmp/claude_bridge_gemini_last_call"
+RATE_LIMIT_FILE="/tmp/gemini_oddity_last_call"
 
 # Initialize Gemini wrapper
 init_gemini_wrapper() {

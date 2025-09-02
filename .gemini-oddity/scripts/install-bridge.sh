@@ -421,7 +421,7 @@ main() {
     echo "  • Uninstall: .gemini-oddity/uninstall.sh"
     echo ""
     echo -e "${DIM}The bridge will automatically activate when Claude uses configured tools.${NC}"
-    echo -e "${DIM}Set CLAUDE_BRIDGE_NOTIFY=verbose to see when delegation occurs.${NC}"
+    echo -e "${DIM}Set GEMINI_ODDITY_NOTIFY=verbose to see when delegation occurs.${NC}"
 }
 
 # Handle command-line arguments

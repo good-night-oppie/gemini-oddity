@@ -13,7 +13,7 @@ source "$TEST_DIR/helpers/test-framework.sh"
 setup_test_env() {
     export TEST_HOME=$(mktemp -d)
     export HOME="$TEST_HOME"
-    export CLAUDE_BRIDGE_NOTIFY="quiet"
+    export GEMINI_ODDITY_NOTIFY="quiet"
     
     # Create mock directories
     mkdir -p "$HOME/.claude"
@@ -142,17 +142,17 @@ test_notification_system() {
     source "$PROJECT_ROOT/hooks/universal-router.sh" 2>/dev/null || true
     
     # Test quiet mode
-    export CLAUDE_BRIDGE_NOTIFY="quiet"
+    export GEMINI_ODDITY_NOTIFY="quiet"
     local output=$(notify_user "DELEGATE" "Test message" 2>&1)
     assert_equals "$output" "" "Quiet mode should produce no output"
     
     # Test subtle mode
-    export CLAUDE_BRIDGE_NOTIFY="subtle"
+    export GEMINI_ODDITY_NOTIFY="subtle"
     output=$(notify_user "DELEGATE" "Test message" 2>&1)
     assert_contains "$output" "🌉" "Subtle mode should show bridge icon"
     
     # Test verbose mode
-    export CLAUDE_BRIDGE_NOTIFY="verbose"
+    export GEMINI_ODDITY_NOTIFY="verbose"
     output=$(notify_user "SUCCESS" "Test success" 2>&1)
     assert_contains "$output" "Bridge" "Verbose mode should show full message"
     assert_contains "$output" "Test success" "Message should be included"
