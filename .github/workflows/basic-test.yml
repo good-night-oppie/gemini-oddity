@@ -1,0 +1,75 @@
+name: Basic Tests
+
+on:
+  push:
+    branches: [ main, develop, feat/* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  basic-tests:
+    name: Basic Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y jq curl netcat-openbsd
+    
+    - name: Run basic tests
+      run: |
+        echo "Running basic validation tests..."
+        # Check if main script exists
+        if [ -f "gemini-oddity" ]; then
+          echo "✓ Main script exists"
+        else
+          echo "✗ Main script missing"
+          exit 1
+        fi
+        
+        # Check if key directories exist
+        for dir in hooks test docs scripts; do
+          if [ -d "$dir" ]; then
+            echo "✓ Directory $dir exists"
+          else
+            echo "✗ Directory $dir missing"
+            exit 1
+          fi
+        done
+        
+        # Check shell script syntax
+        echo "Checking shell script syntax..."
+        find . -name "*.sh" -type f | while read -r script; do
+          if bash -n "$script" 2>/dev/null; then
+            echo "✓ $script syntax OK"
+          else
+            echo "✗ $script has syntax errors"
+            exit 1
+          fi
+        done
+        
+        echo "All basic tests passed!"
+    
+    - name: Check for sensitive files
+      run: |
+        echo "Checking for sensitive files..."
+        # Look for common sensitive file patterns
+        sensitive_patterns="*.key *.pem *.secret *.password .env"
+        found_sensitive=false
+        
+        for pattern in $sensitive_patterns; do
+          if find . -name "$pattern" -type f 2>/dev/null | grep -q .; then
+            echo "⚠ Warning: Found files matching pattern: $pattern"
+            found_sensitive=true
+          fi
+        done
+        
+        if [ "$found_sensitive" = "true" ]; then
+          echo "Please review sensitive files before production use"
+        else
+          echo "✓ No obvious sensitive files found"
+        fi
