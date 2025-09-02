@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/yourusername/gemini-oddity)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/good-night-oppie/gemini-oddity)
 [![Security](https://img.shields.io/badge/security-OAuth%202.0-green.svg)](docs/SECURITY.md)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](.github/workflows/test.yml)
 [![Coverage](https://img.shields.io/badge/coverage-85%25-yellowgreen.svg)](test/reports/coverage.json)
@@ -95,7 +95,7 @@ graph TB
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/gemini-oddity
+git clone https://github.com/good-night-oppie/gemini-oddity
 cd gemini-oddity
 
 # Run the interactive setup wizard
@@ -412,7 +412,7 @@ We welcome contributions! See [Contributing Guidelines](CONTRIBUTING.md).
 
 ```bash
 # Fork and clone
-git clone https://github.com/yourusername/gemini-oddity
+git clone https://github.com/good-night-oppie/gemini-oddity
 cd gemini-oddity
 
 # Create feature branch
@@ -478,8 +478,8 @@ Special thanks to:
 
 Made with ❤️ for the Claude Code community
 
-[Report Bug](https://github.com/yourusername/gemini-oddity/issues) • 
-[Request Feature](https://github.com/yourusername/gemini-oddity/issues) • 
+[Report Bug](https://github.com/good-night-oppie/gemini-oddity/issues) • 
+[Request Feature](https://github.com/good-night-oppie/gemini-oddity/issues) • 
 [Documentation](./docs/) •
 [Security](./docs/SECURITY.md)
 

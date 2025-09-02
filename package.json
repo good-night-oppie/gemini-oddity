@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EdwardTang/gemini-oddity.git"
+    "url": "git+https://github.com/good-night-oppie/gemini-oddity.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/EdwardTang/gemini-oddity/issues"
+    "url": "https://github.com/good-night-oppie/gemini-oddity/issues"
   },
-  "homepage": "https://github.com/EdwardTang/gemini-oddity#readme"
+  "homepage": "https://github.com/good-night-oppie/gemini-oddity#readme"
 }
