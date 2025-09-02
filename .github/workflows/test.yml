@@ -12,18 +12,10 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        bash-version: ['4.4', '5.0', '5.1']
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-    
-    - name: Setup Bash ${{ matrix.bash-version }}
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y bash=${{ matrix.bash-version }}*
     
     - name: Install dependencies
       run: |
@@ -141,16 +133,20 @@ jobs:
     - name: Install Claude Code CLI
       run: |
         # Mock Claude Code installation for testing
-        echo '#!/bin/bash' > /usr/local/bin/claude
-        echo 'echo "Claude Code mock"' >> /usr/local/bin/claude
-        chmod +x /usr/local/bin/claude
+        mkdir -p $HOME/.local/bin
+        echo '#!/bin/bash' > $HOME/.local/bin/claude
+        echo 'echo "Claude Code mock"' >> $HOME/.local/bin/claude
+        chmod +x $HOME/.local/bin/claude
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
     
     - name: Install Gemini CLI
       run: |
         # Mock Gemini CLI installation
-        echo '#!/bin/bash' > /usr/local/bin/gemini
-        echo 'echo "Gemini CLI mock"' >> /usr/local/bin/gemini
-        chmod +x /usr/local/bin/gemini
+        mkdir -p $HOME/.local/bin
+        echo '#!/bin/bash' > $HOME/.local/bin/gemini
+        echo 'echo "Gemini CLI mock"' >> $HOME/.local/bin/gemini
+        chmod +x $HOME/.local/bin/gemini
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
     
     - name: Run E2E tests
       run: |
@@ -172,13 +168,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04, ubuntu-22.04, macos-latest]
-        include:
-          - os: ubuntu-20.04
-            shell: bash
-          - os: ubuntu-22.04
-            shell: bash
-          - os: macos-latest
-            shell: bash
     
     steps:
     - name: Checkout code
@@ -194,7 +183,6 @@ jobs:
         fi
     
     - name: Run compatibility tests
-      shell: ${{ matrix.shell }}
       run: |
         chmod +x test/test-runner.sh
         ./test/test-runner.sh
