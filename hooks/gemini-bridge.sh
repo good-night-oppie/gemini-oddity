@@ -26,7 +26,7 @@ source "$SCRIPT_DIR/lib/enhanced-delegation.sh"
 
 # Notification configuration
 export CLAUDE_BRIDGE_NOTIFY="${CLAUDE_BRIDGE_NOTIFY:-subtle}"
-BRIDGE_STATUS_LOG="${BRIDGE_STATUS_LOG:-$HOME/.claude/bridge-status.log}"
+ODDITY_STATUS_LOG="${ODDITY_STATUS_LOG:-$HOME/.claude/oddity-status.log}"
 
 # Enhanced notification function
 notify_user() {
@@ -35,7 +35,7 @@ notify_user() {
     local timestamp=$(date -Iseconds)
     
     # Always log to status file
-    echo "$timestamp [$level] $message" >> "$BRIDGE_STATUS_LOG"
+    echo "$timestamp [$level] $message" >> "$ODDITY_STATUS_LOG"
     
     # Terminal notifications based on level
     case "$CLAUDE_BRIDGE_NOTIFY" in
@@ -49,7 +49,7 @@ notify_user() {
                     echo -e "\033[2m🌉\033[0m" >&2
                     ;;
                 ERROR|CRITICAL)
-                    echo -e "\033[0;31m⚠️ Bridge: $message\033[0m" >&2
+                    echo -e "\033[0;31m⚠️ Oddity: $message\033[0m" >&2
                     ;;
             esac
             ;;
@@ -57,22 +57,22 @@ notify_user() {
             # Full notifications
             case "$level" in
                 ACTIVE)
-                    echo -e "\033[0;32m🌉 Bridge: $message\033[0m" >&2
+                    echo -e "\033[0;32m🌉 Oddity: $message\033[0m" >&2
                     ;;
                 DELEGATE)
-                    echo -e "\033[0;34m🌉 Bridge: $message\033[0m" >&2
+                    echo -e "\033[0;34m🌉 Oddity: $message\033[0m" >&2
                     ;;
                 SUCCESS)
-                    echo -e "\033[0;32m🌉 Bridge: $message\033[0m" >&2
+                    echo -e "\033[0;32m🌉 Oddity: $message\033[0m" >&2
                     ;;
                 CACHE)
-                    echo -e "\033[2m🌉 Bridge: $message\033[0m" >&2
+                    echo -e "\033[2m🌉 Oddity: $message\033[0m" >&2
                     ;;
                 ERROR)
-                    echo -e "\033[0;31m🌉 Bridge: $message\033[0m" >&2
+                    echo -e "\033[0;31m🌉 Oddity: $message\033[0m" >&2
                     ;;
                 *)
-                    echo -e "🌉 Bridge: $message" >&2
+                    echo -e "🌉 Oddity: $message" >&2
                     ;;
             esac
             ;;
@@ -104,7 +104,7 @@ if [ -z "${CAPTURE_DIR:-}" ]; then
 fi
 
 # Initialize debug system
-init_debug "gemini-bridge" "$SCRIPT_DIR/../logs/debug"
+init_debug "gemini-oddity" "$SCRIPT_DIR/../logs/debug"
 
 # Start performance measurement
 start_timer "hook_execution"

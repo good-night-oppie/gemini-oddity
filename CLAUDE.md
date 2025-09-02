@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with th
 
 ## Project Overview
 
-Gemini Oddity is an intelligent hook system that seamlessly integrates Claude Code with Google Gemini for large-scale code analysis tasks. When Claude Code encounters complex analysis requests, the bridge automatically delegates appropriate tasks to Gemini while maintaining Claude's control over the conversation flow.
+Gemini Oddity is an intelligent hook system that seamlessly integrates Claude Code with Google Gemini for large-scale code analysis tasks. When Claude Code encounters complex analysis requests, the oddity automatically delegates appropriate tasks to Gemini while maintaining Claude's control over the conversation flow.
 
 ## Architecture
 
@@ -28,7 +28,7 @@ Gemini Oddity is an intelligent hook system that seamlessly integrates Claude Co
 
 ### Automatic Delegation Triggers
 
-The bridge delegates to Gemini when:
+The oddity delegates to Gemini when:
 - **Token Limit**: Content exceeds ~50k tokens (~200KB, optimized for Claude's 200k context)
 - **Multi-File Tasks**: ≥3 files for Task operations (configurable)
 - **Safety Limits**: Content must be ≤10MB and ≤800k tokens for Gemini processing
@@ -72,7 +72,7 @@ See README.md for complete configuration reference.
 ## Security Considerations
 
 ### File Exclusions
-The bridge automatically excludes sensitive files:
+The oddity automatically excludes sensitive files:
 - `*.secret`, `*.key`, `*.env`
 - `*.password`, `*.token`, `*.pem`, `*.p12`
 

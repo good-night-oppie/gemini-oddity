@@ -68,9 +68,9 @@ check_requirements() {
     log "info" "All prerequisites met"
 }
 
-# Copy bridge files to target directory
-copy_bridge_files() {
-    log "info" "Copying bridge files to $TARGET_DIR..."
+# Copy oddity files to target directory
+copy_oddity_files() {
+    log "info" "Copying oddity files to $TARGET_DIR..."
     
     # Create target directory
     mkdir -p "$TARGET_DIR"
@@ -90,9 +90,9 @@ copy_bridge_files() {
     mkdir -p "$TARGET_DIR"/{cache/gemini,logs/debug,debug/captured}
     
     if [ $? -eq 0 ]; then
-        log "info" "Bridge files copied successfully"
+        log "info" "Oddity files copied successfully"
     else
-        error_exit "Error copying bridge files"
+        error_exit "Error copying oddity files"
     fi
 }
 
@@ -354,7 +354,7 @@ show_summary() {
     echo "🎉 Configuration completed successfully!"
     echo "======================================="
     echo ""
-    echo "📁 Bridge installed in: $TARGET_DIR"
+    echo "📁 Oddity installed in: $TARGET_DIR"
     echo "⚙️  Claude Settings: $CLAUDE_SETTINGS_FILE"
     echo ""
     echo "🧪 Next steps:"
@@ -389,10 +389,10 @@ main() {
     echo "This script will install the Gemini Oddity in your current project."
     echo ""
     echo "Current directory: $(pwd)"
-    echo "Bridge will be installed in: $TARGET_DIR"
+    echo "Oddity will be installed in: $TARGET_DIR"
     echo "Claude settings: $CLAUDE_SETTINGS_FILE"
     echo ""
-    echo "The bridge files will be copied to your project and Claude will be"
+    echo "The oddity files will be copied to your project and Claude will be"
     echo "configured to use this project-specific installation."
     echo ""
     read -p "Continue with installation? (y/N): " confirm
@@ -406,7 +406,7 @@ main() {
     
     # Installation steps
     check_requirements
-    copy_bridge_files
+    copy_oddity_files
     test_gemini_connection
     configure_claude_hooks
     set_permissions

@@ -1,6 +1,6 @@
 # Contributing to Gemini Oddity
 
-Thank you for your interest in contributing to Gemini Oddity! This document provides comprehensive guidelines for contributing to our OAuth-enhanced Claude Code and Google Gemini integration bridge.
+Thank you for your interest in contributing to Gemini Oddity! This document provides comprehensive guidelines for contributing to our OAuth-enhanced Claude Code and Google Gemini integration oddity.
 
 ## 🚀 Getting Started
 
@@ -194,7 +194,7 @@ Clear description of the issue
 - OS: macOS 14.5 / Ubuntu 20.04 / etc.
 - Claude Code Version: 1.0.40
 - Gemini CLI Version: 1.2.3
-- Bridge Version: commit hash
+- Oddity Version: commit hash
 
 **Reproduction Steps**
 1. Step one
@@ -283,7 +283,7 @@ gemini-oddity/
 │   └── TROUBLESHOOTING.md     # Debug guide
 └── scripts/
     ├── init-gemini-delegation.sh # Setup helpers
-    └── install-bridge.sh      # Bridge installer
+    └── install-bridge.sh      # Oddity installer
 ```
 
 ## 🔍 Debugging Guidelines

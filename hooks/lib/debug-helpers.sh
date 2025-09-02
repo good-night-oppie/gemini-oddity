@@ -6,8 +6,8 @@ DEBUG_LOG_DIR=""
 DEBUG_LEVEL=${DEBUG_LEVEL:-1}
 DEBUG_COMPONENT=""
 
-# Helper to get bridge directory
-get_bridge_dir() {
+# Helper to get oddity directory
+get_oddity_dir() {
     echo "${GEMINI_ODDITY_DIR:-$HOME/.gemini-oddity}"
 }
 

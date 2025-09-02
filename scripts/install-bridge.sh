@@ -15,7 +15,7 @@ set -euo pipefail
 INSTALLER_VERSION="2.0.0"
 SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TARGET_DIR="$(pwd)/.gemini-oddity"
-BRIDGE_REGISTRY="$HOME/.claude/oddity-registry.json"
+ODDITY_REGISTRY="$HOME/.claude/oddity-registry.json"
 CLAUDE_SETTINGS="$HOME/.claude/settings.json"
 UNIVERSAL_ROUTER="$HOME/.claude/hooks/universal-router.sh"
 
@@ -164,16 +164,16 @@ ensure_gemini_authenticated() {
 
 # Initialize or update registry
 initialize_registry() {
-    if [[ ! -f "$BRIDGE_REGISTRY" ]]; then
-        mkdir -p "$(dirname "$BRIDGE_REGISTRY")"
-        cat > "$BRIDGE_REGISTRY" <<EOF
+    if [[ ! -f "$ODDITY_REGISTRY" ]]; then
+        mkdir -p "$(dirname "$ODDITY_REGISTRY")"
+        cat > "$ODDITY_REGISTRY" <<EOF
 {
     "version": "$INSTALLER_VERSION",
     "projects": {},
     "router_installed": "$(date -Iseconds)"
 }
 EOF
-        log "debug" "Created new bridge registry"
+        log "debug" "Created new oddity registry"
     fi
 }
 
@@ -197,9 +197,9 @@ register_project() {
                "tools": $tools,
                "enabled": true
            }
-       }' "$BRIDGE_REGISTRY" > "$temp_registry"
+       }' "$ODDITY_REGISTRY" > "$temp_registry"
     
-    mv "$temp_registry" "$BRIDGE_REGISTRY"
+    mv "$temp_registry" "$ODDITY_REGISTRY"
     log "info" "Project registered: $(basename "$project_dir")"
 }
 
@@ -237,9 +237,9 @@ install_universal_router() {
     fi
 }
 
-# Copy bridge files
-copy_bridge_files() {
-    log "step" "Installing bridge files to $TARGET_DIR..."
+# Copy oddity files
+copy_oddity_files() {
+    log "step" "Installing oddity files to $TARGET_DIR..."
     
     # Create target directory
     mkdir -p "$TARGET_DIR"
@@ -264,7 +264,7 @@ copy_bridge_files() {
 # Project-specific uninstaller
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-BRIDGE_REGISTRY="$HOME/.claude/oddity-registry.json"
+ODDITY_REGISTRY="$HOME/.claude/oddity-registry.json"
 
 echo "🗑️  Uninstalling Gemini Oddity from $PROJECT_DIR"
 
@@ -278,7 +278,7 @@ fi
 
 # Remove bridge directory
 rm -rf "$PROJECT_DIR/.gemini-oddity"
-echo "✅ Bridge files removed"
+echo "✅ Oddity files removed"
 
 echo "🎉 Uninstall complete!"
 EOF
@@ -287,7 +287,7 @@ EOF
     # Create working directories
     mkdir -p "$TARGET_DIR"/{cache/gemini,logs/debug,debug/captured}
     
-    log "info" "Bridge files installed"
+    log "info" "Oddity files installed"
 }
 
 # Setup token refresh cron (optional)
@@ -360,20 +360,20 @@ main() {
         "not_authenticated")
             log "warn" "Gemini not authenticated"
             echo ""
-            echo "Gemini OAuth is required for the bridge to delegate tasks."
+            echo "Gemini OAuth is required for the oddity to delegate tasks."
             read -p "Set up Gemini OAuth now? (Y/n): " setup_oauth
             if [[ ! "$setup_oauth" =~ ^[Nn]$ ]]; then
-                setup_gemini_oauth || log "warn" "Continuing without OAuth (bridge will be limited)"
+                setup_gemini_oauth || log "warn" "Continuing without OAuth (oddity will be limited)"
             else
-                log "warn" "Skipping OAuth setup - bridge functionality will be limited"
+                log "warn" "Skipping OAuth setup - oddity functionality will be limited"
             fi
             ;;
     esac
     
-    # Step 3: Install bridge files
-    header "📦 Installing Bridge"
+    # Step 3: Install oddity files
+    header "📦 Installing Oddity"
     
-    copy_bridge_files
+    copy_oddity_files
     
     # Step 4: Install/update universal router
     log "step" "Configuring universal router..."
@@ -385,7 +385,7 @@ main() {
     
     # Ask which tools to enable
     echo ""
-    echo "Which tools should the bridge handle?"
+    echo "Which tools should the oddity handle?"
     echo "  1) All tools (Read, Grep, Glob, Task) [Default]"
     echo "  2) Task operations only"
     echo "  3) Custom selection"
@@ -413,14 +413,14 @@ main() {
     echo ""
     echo "📍 Project: $(basename "$project_dir")"
     echo "🔧 Tools configured: $tools"
-    echo "🌉 Bridge location: $TARGET_DIR"
+    echo "🌉 Oddity location: $TARGET_DIR"
     echo ""
     echo -e "${CYAN}Quick commands:${NC}"
     echo "  • Status: gemini-oddity status"
     echo "  • List projects: gemini-oddity list"
     echo "  • Uninstall: .gemini-oddity/uninstall.sh"
     echo ""
-    echo -e "${DIM}The bridge will automatically activate when Claude uses configured tools.${NC}"
+    echo -e "${DIM}The oddity will automatically activate when Claude uses configured tools.${NC}"
     echo -e "${DIM}Set GEMINI_ODDITY_NOTIFY=verbose to see when delegation occurs.${NC}"
 }
 
@@ -459,7 +459,7 @@ case "${1:-install}" in
         echo "Usage: $0 [command]"
         echo ""
         echo "Commands:"
-        echo "  install     Install bridge in current directory (default)"
+        echo "  install     Install oddity in current directory (default)"
         echo "  status      Show router and project status"
         echo "  list        List all registered projects"
         echo "  register    Register current directory"

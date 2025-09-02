@@ -1,6 +1,6 @@
 #!/bin/bash
 # Gemini Oddity Complete System Installer
-# Installs bridge, hooks, PR monitoring, and GitHub Actions
+# Installs oddity, hooks, PR monitoring, and GitHub Actions
 
 set -euo pipefail
 
@@ -35,7 +35,7 @@ show_banner() {
     echo "║                                                            ║"
     echo "║     Gemini Oddity Complete System Installer        ║"
     echo "║                                                            ║"
-    echo "║  🚀 Bridge + 🎯 PR Review + 🔄 CI Monitor + 🤖 Automation  ║"
+    echo "║  🚀 Oddity + 🎯 PR Review + 🔄 CI Monitor + 🤖 Automation  ║"
     echo "║                                                            ║"
     echo "╚════════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
@@ -93,7 +93,7 @@ interactive_setup() {
     echo ""
     
     # Installation directory
-    echo -e "${CYAN}Where should the bridge be installed?${NC}"
+    echo -e "${CYAN}Where should the oddity be installed?${NC}"
     echo "  Current: $TARGET_DIR"
     read -p "Press Enter to accept or type new path: " custom_path
     if [ -n "$custom_path" ]; then
@@ -187,13 +187,13 @@ backup_configuration() {
     fi
     
     if [ -d "$TARGET_DIR" ]; then
-        tar -czf "$BACKUP_DIR/bridge-backup-$BACKUP_SUFFIX.tar.gz" "$TARGET_DIR" 2>/dev/null || true
-        log info "Existing bridge backed up"
+        tar -czf "$BACKUP_DIR/oddity-backup-$BACKUP_SUFFIX.tar.gz" "$TARGET_DIR" 2>/dev/null || true
+        log info "Existing oddity backed up"
     fi
 }
 
-# Install bridge files
-install_bridge_files() {
+# Install oddity files
+install_oddity_files() {
     if [[ "$INSTALL_BRIDGE" != "Y" ]]; then
         return 0
     fi
@@ -224,7 +224,7 @@ install_bridge_files() {
     # Make scripts executable
     find "$TARGET_DIR" -name "*.sh" -exec chmod +x {} \;
     
-    log info "Bridge files installed"
+    log info "Oddity files installed"
 }
 
 # Configure Claude hooks
@@ -401,13 +401,13 @@ EOF
 run_tests() {
     log step "Running installation tests..."
     
-    # Test bridge hook
+    # Test oddity hook
     if [ -f "$TARGET_DIR/hooks/gemini-bridge.sh" ]; then
         local test_json='{"tool_name":"Read","tool_input":{"file_path":"test.txt"}}'
         if echo "$test_json" | "$TARGET_DIR/hooks/gemini-bridge.sh" 2>/dev/null | jq empty 2>/dev/null; then
-            log info "Bridge hook test passed"
+            log info "Oddity hook test passed"
         else
-            log warn "Bridge hook test failed (may be normal without Gemini API key)"
+            log warn "Oddity hook test failed (may be normal without Gemini API key)"
         fi
     fi
     
@@ -428,7 +428,7 @@ show_summary() {
     echo ""
     
     echo -e "${CYAN}📁 Installation Details:${NC}"
-    echo "   Bridge location: $TARGET_DIR"
+    echo "   Oddity location: $TARGET_DIR"
     echo "   Claude settings: $CLAUDE_SETTINGS_FILE"
     echo "   Backup location: $BACKUP_DIR"
     echo ""
@@ -479,7 +479,7 @@ main() {
     echo ""
     
     backup_configuration
-    install_bridge_files
+    install_oddity_files
     configure_claude_hooks
     install_github_actions
     configure_github_secrets

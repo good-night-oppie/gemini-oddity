@@ -167,13 +167,13 @@ show_summary() {
     echo "============================"
     echo ""
     echo "✅ Gemini Oddity hooks removed from: $CLAUDE_SETTINGS_FILE"
-    echo "📁 Bridge directory remains: $SCRIPT_DIR"
+    echo "📁 Oddity directory remains: $SCRIPT_DIR"
     echo ""
     echo "📚 Next steps:"
     echo ""
     echo "   1. **RESTART Claude Code** to apply hook changes"
     echo ""
-    echo "   2. Optional: Remove the bridge directory manually:"
+    echo "   2. Optional: Remove the oddity directory manually:"
     echo "      rm -rf $SCRIPT_DIR"
     echo ""
     echo "   3. If needed, restore settings backup:"
@@ -186,7 +186,7 @@ show_summary() {
 # Main uninstallation
 main() {
     echo "This script removes Gemini Oddity hooks from Claude Code settings."
-    echo "Bridge directory: $SCRIPT_DIR"
+    echo "Oddity directory: $SCRIPT_DIR"
     echo ""
     
     # Ask what to clean up

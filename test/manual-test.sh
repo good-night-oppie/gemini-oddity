@@ -8,14 +8,14 @@ echo ""
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Use current directory structure (git repo = installation)
-BRIDGE_DIR="$SCRIPT_DIR/.."
-echo "🔧 Running from: $BRIDGE_DIR"
+ODDITY_DIR="$SCRIPT_DIR/.."
+echo "🔧 Running from: $ODDITY_DIR"
 
-BRIDGE_SCRIPT="$BRIDGE_DIR/hooks/gemini-bridge.sh"
+ODDITY_SCRIPT="$ODDITY_DIR/hooks/gemini-bridge.sh"
 
-# Check if bridge script exists
-if [ ! -f "$BRIDGE_SCRIPT" ]; then
-    echo "❌ Bridge script not found: $BRIDGE_SCRIPT"
+# Check if oddity script exists
+if [ ! -f "$ODDITY_SCRIPT" ]; then
+    echo "❌ Oddity script not found: $ODDITY_SCRIPT"
     exit 1
 fi
 
@@ -37,13 +37,13 @@ run_test() {
     cat "$json_file" | jq '.' 2>/dev/null || cat "$json_file"
     echo ""
     
-    echo "⚡ Bridge Response:"
-    cat "$json_file" | "$BRIDGE_SCRIPT" | jq '.' 2>/dev/null || cat "$json_file" | "$BRIDGE_SCRIPT"
+    echo "⚡ Oddity Response:"
+    cat "$json_file" | "$ODDITY_SCRIPT" | jq '.' 2>/dev/null || cat "$json_file" | "$ODDITY_SCRIPT"
     echo ""
     
     echo "📊 Check logs for details:"
-    echo "   Debug: tail -f $BRIDGE_DIR/logs/debug/$(date +%Y%m%d).log"
-    echo "   Errors: tail -f $BRIDGE_DIR/logs/debug/errors.log"
+    echo "   Debug: tail -f $ODDITY_DIR/logs/debug/$(date +%Y%m%d).log"
+    echo "   Errors: tail -f $ODDITY_DIR/logs/debug/errors.log"
     echo ""
 }
 
@@ -82,11 +82,11 @@ while true; do
             echo '{"tool":"Read","parameters":{"file_path":"@test.txt"},"context":{}}'
             echo ""
             CUSTOM_JSON=$(cat)
-            echo "$CUSTOM_JSON" | "$BRIDGE_SCRIPT" | jq '.' 2>/dev/null || echo "$CUSTOM_JSON" | "$BRIDGE_SCRIPT"
+            echo "$CUSTOM_JSON" | "$ODDITY_SCRIPT" | jq '.' 2>/dev/null || echo "$CUSTOM_JSON" | "$ODDITY_SCRIPT"
             echo ""
             ;;
         6)
-            CAPTURE_DIR="$BRIDGE_DIR/debug/captured"
+            CAPTURE_DIR="$ODDITY_DIR/debug/captured"
             if [ -d "$CAPTURE_DIR" ] && [ "$(ls -A "$CAPTURE_DIR" 2>/dev/null)" ]; then
                 echo "Available captures:"
                 ls -la "$CAPTURE_DIR/"
@@ -106,21 +106,21 @@ while true; do
             echo "🧪 Testing all library functions..."
             echo ""
             echo "Path Converter:"
-            "$BRIDGE_DIR/hooks/lib/path-converter.sh"
+            "$ODDITY_DIR/hooks/lib/path-converter.sh"
             echo ""
             echo "JSON Parser:"
-            "$BRIDGE_DIR/hooks/lib/json-parser.sh"
+            "$ODDITY_DIR/hooks/lib/json-parser.sh"
             echo ""
             echo "Debug Helpers:"
-            "$BRIDGE_DIR/hooks/lib/debug-helpers.sh"
+            "$ODDITY_DIR/hooks/lib/debug-helpers.sh"
             echo ""
             echo "Gemini Wrapper:"
-            "$BRIDGE_DIR/hooks/lib/gemini-wrapper.sh"
+            "$ODDITY_DIR/hooks/lib/gemini-wrapper.sh"
             echo ""
             ;;
         8)
             echo "📋 Recent Debug Logs (last 20 lines):"
-            LOG_FILE="$BRIDGE_DIR/logs/debug/$(date +%Y%m%d).log"
+            LOG_FILE="$ODDITY_DIR/logs/debug/$(date +%Y%m%d).log"
             if [ -f "$LOG_FILE" ]; then
                 tail -20 "$LOG_FILE"
             else
@@ -129,7 +129,7 @@ while true; do
             echo ""
             
             echo "📋 Recent Error Logs:"
-            ERROR_FILE="$BRIDGE_DIR/logs/debug/errors.log"
+            ERROR_FILE="$ODDITY_DIR/logs/debug/errors.log"
             if [ -f "$ERROR_FILE" ]; then
                 tail -10 "$ERROR_FILE"
             else
@@ -139,12 +139,12 @@ while true; do
             ;;
         9)
             echo "🧹 Clearing cache and logs..."
-            rm -rf "$BRIDGE_DIR/cache/gemini/"*
-            rm -rf "$BRIDGE_DIR/logs/debug/"*
-            rm -rf "$BRIDGE_DIR/debug/captured/"*
-            mkdir -p "$BRIDGE_DIR/cache/gemini"
-            mkdir -p "$BRIDGE_DIR/logs/debug"
-            mkdir -p "$BRIDGE_DIR/debug/captured"
+            rm -rf "$ODDITY_DIR/cache/gemini/"*
+            rm -rf "$ODDITY_DIR/logs/debug/"*
+            rm -rf "$ODDITY_DIR/debug/captured/"*
+            mkdir -p "$ODDITY_DIR/cache/gemini"
+            mkdir -p "$ODDITY_DIR/logs/debug"
+            mkdir -p "$ODDITY_DIR/debug/captured"
             echo "✅ Cache and logs cleared"
             echo ""
             ;;
