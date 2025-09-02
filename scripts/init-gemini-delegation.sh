@@ -26,7 +26,7 @@ echo ""
 check_dependencies() {
     local missing_deps=()
     
-    # Check for Claude Gemini Bridge
+    # Check for Gemini Oddity
     if [ ! -d "/home/dev/workspace/gemini-oddity" ]; then
         missing_deps+=("gemini-oddity")
     fi

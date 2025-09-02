@@ -15,7 +15,7 @@ set -euo pipefail
 INSTALLER_VERSION="2.0.0"
 SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TARGET_DIR="$(pwd)/.gemini-oddity"
-BRIDGE_REGISTRY="$HOME/.claude/bridge-registry.json"
+BRIDGE_REGISTRY="$HOME/.claude/oddity-registry.json"
 CLAUDE_SETTINGS="$HOME/.claude/settings.json"
 UNIVERSAL_ROUTER="$HOME/.claude/hooks/universal-router.sh"
 
@@ -264,7 +264,7 @@ copy_bridge_files() {
 # Project-specific uninstaller
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-BRIDGE_REGISTRY="$HOME/.claude/bridge-registry.json"
+BRIDGE_REGISTRY="$HOME/.claude/oddity-registry.json"
 
 echo "🗑️  Uninstalling Gemini Oddity from $PROJECT_DIR"
 
@@ -421,7 +421,7 @@ main() {
     echo "  • Uninstall: .gemini-oddity/uninstall.sh"
     echo ""
     echo -e "${DIM}The bridge will automatically activate when Claude uses configured tools.${NC}"
-    echo -e "${DIM}Set CLAUDE_BRIDGE_NOTIFY=verbose to see when delegation occurs.${NC}"
+    echo -e "${DIM}Set GEMINI_ODDITY_NOTIFY=verbose to see when delegation occurs.${NC}"
 }
 
 # Handle command-line arguments

@@ -9,8 +9,8 @@ set -euo pipefail
 # Version and paths
 CLI_VERSION="2.0.0"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BRIDGE_REGISTRY="$HOME/.claude/bridge-registry.json"
-BRIDGE_STATUS_LOG="$HOME/.claude/bridge-status.log"
+ODDITY_REGISTRY="$HOME/.claude/oddity-registry.json"
+ODDITY_STATUS_LOG="$HOME/.claude/oddity-status.log"
 
 # Colors
 GREEN='\033[0;32m'
@@ -45,7 +45,7 @@ show_help() {
     echo "  help                 Show this help message"
     echo ""
     echo "Environment Variables:"
-    echo "  CLAUDE_BRIDGE_NOTIFY  Notification level (quiet|subtle|verbose|debug)"
+    echo "  GEMINI_ODDITY_NOTIFY  Notification level (quiet|subtle|verbose|debug)"
     echo "  DEBUG                 Enable debug output (0|1)"
 }
 
@@ -88,8 +88,8 @@ cmd_status() {
     fi
     
     # Registry
-    if [[ -f "$BRIDGE_REGISTRY" ]]; then
-        local project_count=$(jq -r '.projects | length' "$BRIDGE_REGISTRY" 2>/dev/null || echo "0")
+    if [[ -f "$ODDITY_REGISTRY" ]]; then
+        local project_count=$(jq -r '.projects | length' "$ODDITY_REGISTRY" 2>/dev/null || echo "0")
         echo -e "  ${GREEN}✅${NC} Registry active ($project_count projects)"
     else
         echo -e "  ${YELLOW}⚠️${NC} Registry not initialized"
@@ -118,8 +118,8 @@ cmd_status() {
         echo -e "  ${GREEN}✅${NC} Bridge installed here"
         
         # Check if registered
-        if [[ -f "$BRIDGE_REGISTRY" ]]; then
-            local is_registered=$(jq --arg dir "$current_dir" '.projects[$dir] // null' "$BRIDGE_REGISTRY")
+        if [[ -f "$ODDITY_REGISTRY" ]]; then
+            local is_registered=$(jq --arg dir "$current_dir" '.projects[$dir] // null' "$ODDITY_REGISTRY")
             if [[ "$is_registered" != "null" ]]; then
                 local enabled=$(echo "$is_registered" | jq -r '.config.enabled')
                 local tools=$(echo "$is_registered" | jq -r '.config.tools')
@@ -134,10 +134,10 @@ cmd_status() {
     fi
     
     # Recent activity
-    if [[ -f "$BRIDGE_STATUS_LOG" ]]; then
+    if [[ -f "$ODDITY_STATUS_LOG" ]]; then
         echo ""
         echo "Recent Activity:"
-        tail -5 "$BRIDGE_STATUS_LOG" 2>/dev/null | while read line; do
+        tail -5 "$ODDITY_STATUS_LOG" 2>/dev/null | while read line; do
             echo -e "  ${DIM}$line${NC}"
         done
     fi
@@ -148,14 +148,14 @@ cmd_list() {
     echo -e "${BOLD}Registered Projects${NC}"
     echo "━━━━━━━━━━━━━━━━━━━━━━"
     
-    if [[ ! -f "$BRIDGE_REGISTRY" ]]; then
+    if [[ ! -f "$ODDITY_REGISTRY" ]]; then
         echo -e "${DIM}No projects registered${NC}"
         return
     fi
     
     local projects=$(jq -r '.projects | to_entries[] | 
         "\(.key)|\(.value.bridge_version)|\(.value.config.enabled)|\(.value.config.tools)"' \
-        "$BRIDGE_REGISTRY" 2>/dev/null)
+        "$ODDITY_REGISTRY" 2>/dev/null)
     
     if [[ -z "$projects" ]]; then
         echo -e "${DIM}No projects registered${NC}"
@@ -190,7 +190,7 @@ update_project_status() {
     local project_dir="$1"
     local enabled="$2"
     
-    if [[ ! -f "$BRIDGE_REGISTRY" ]]; then
+    if [[ ! -f "$ODDITY_REGISTRY" ]]; then
         echo -e "${RED}❌ No registry found${NC}"
         return 1
     fi
@@ -198,9 +198,9 @@ update_project_status() {
     local temp_registry=$(mktemp)
     jq --arg dir "$project_dir" --arg enabled "$enabled" \
        '(.projects[$dir].config.enabled) = ($enabled == "true")' \
-       "$BRIDGE_REGISTRY" > "$temp_registry"
+       "$ODDITY_REGISTRY" > "$temp_registry"
     
-    mv "$temp_registry" "$BRIDGE_REGISTRY"
+    mv "$temp_registry" "$ODDITY_REGISTRY"
 }
 
 # OAuth commands
@@ -235,9 +235,9 @@ cmd_logs() {
     echo -e "${BOLD}Bridge Activity Log${NC}"
     echo "━━━━━━━━━━━━━━━━━━━━━━"
     
-    if [[ -f "$BRIDGE_STATUS_LOG" ]]; then
+    if [[ -f "$ODDITY_STATUS_LOG" ]]; then
         echo ""
-        tail -"$lines" "$BRIDGE_STATUS_LOG"
+        tail -"$lines" "$ODDITY_STATUS_LOG"
     else
         echo -e "${DIM}No activity log found${NC}"
     fi
@@ -245,16 +245,16 @@ cmd_logs() {
 
 # Configuration
 cmd_config() {
-    echo -e "${BOLD}Bridge Configuration${NC}"
+    echo -e "${BOLD}Oddity Configuration${NC}"
     echo "━━━━━━━━━━━━━━━━━━━━━━"
     echo ""
-    echo "Notification Level: ${CLAUDE_BRIDGE_NOTIFY:-subtle}"
+    echo "Notification Level: ${GEMINI_ODDITY_NOTIFY:-subtle}"
     echo "Debug Mode: ${DEBUG:-0}"
-    echo "Registry: $BRIDGE_REGISTRY"
-    echo "Status Log: $BRIDGE_STATUS_LOG"
+    echo "Registry: $ODDITY_REGISTRY"
+    echo "Status Log: $ODDITY_STATUS_LOG"
     echo ""
     echo "To change notification level:"
-    echo "  export CLAUDE_BRIDGE_NOTIFY=verbose"
+    echo "  export GEMINI_ODDITY_NOTIFY=verbose"
     echo ""
     echo "Options: quiet | subtle | verbose | debug"
 }
@@ -309,8 +309,8 @@ cmd_version() {
     echo -e "${BOLD}Gemini Oddity${NC}"
     echo "CLI Version: $CLI_VERSION"
     
-    if [[ -f "$BRIDGE_REGISTRY" ]]; then
-        local router_version=$(jq -r '.version // "unknown"' "$BRIDGE_REGISTRY")
+    if [[ -f "$ODDITY_REGISTRY" ]]; then
+        local router_version=$(jq -r '.version // "unknown"' "$ODDITY_REGISTRY")
         echo "Router Version: $router_version"
     fi
 }

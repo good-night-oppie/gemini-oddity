@@ -13,7 +13,7 @@ source "$TEST_DIR/helpers/test-framework.sh"
 setup_test_env() {
     export TEST_HOME=$(mktemp -d)
     export HOME="$TEST_HOME"
-    export CLAUDE_BRIDGE_NOTIFY="quiet"
+    export GEMINI_ODDITY_NOTIFY="quiet"
     
     # Create mock directories
     mkdir -p "$HOME/.claude"
@@ -51,14 +51,14 @@ test_universal_router_init() {
     initialize_registry
     
     # Check registry was created
-    assert_file_exists "$HOME/.claude/bridge-registry.json" \
+    assert_file_exists "$HOME/.claude/oddity-registry.json" \
         "Registry file should be created"
     
     # Verify registry structure
-    local version=$(jq -r '.version' "$HOME/.claude/bridge-registry.json")
+    local version=$(jq -r '.version' "$HOME/.claude/oddity-registry.json")
     assert_equals "$version" "2.0.0" "Registry version should be 2.0.0"
     
-    local projects=$(jq -r '.projects | length' "$HOME/.claude/bridge-registry.json")
+    local projects=$(jq -r '.projects | length' "$HOME/.claude/oddity-registry.json")
     assert_equals "$projects" "0" "Registry should start with no projects"
     
     teardown_test_env
@@ -82,11 +82,11 @@ test_project_registration() {
     register_project "$test_project" "Read|Task"
     
     # Verify registration
-    assert_file_exists "$HOME/.claude/bridge-registry.json" \
+    assert_file_exists "$HOME/.claude/oddity-registry.json" \
         "Registry should exist after registration"
     
     local registered=$(jq --arg dir "$test_project" '.projects[$dir] // null' \
-        "$HOME/.claude/bridge-registry.json")
+        "$HOME/.claude/oddity-registry.json")
     assert_not_equals "$registered" "null" "Project should be registered"
     
     local tools=$(echo "$registered" | jq -r '.config.tools')
@@ -142,26 +142,26 @@ test_notification_system() {
     source "$PROJECT_ROOT/hooks/universal-router.sh" 2>/dev/null || true
     
     # Test quiet mode
-    export CLAUDE_BRIDGE_NOTIFY="quiet"
+    export GEMINI_ODDITY_NOTIFY="quiet"
     local output=$(notify_user "DELEGATE" "Test message" 2>&1)
     assert_equals "$output" "" "Quiet mode should produce no output"
     
     # Test subtle mode
-    export CLAUDE_BRIDGE_NOTIFY="subtle"
+    export GEMINI_ODDITY_NOTIFY="subtle"
     output=$(notify_user "DELEGATE" "Test message" 2>&1)
     assert_contains "$output" "🌉" "Subtle mode should show bridge icon"
     
     # Test verbose mode
-    export CLAUDE_BRIDGE_NOTIFY="verbose"
+    export GEMINI_ODDITY_NOTIFY="verbose"
     output=$(notify_user "SUCCESS" "Test success" 2>&1)
     assert_contains "$output" "Bridge" "Verbose mode should show full message"
     assert_contains "$output" "Test success" "Message should be included"
     
     # Verify logging
-    assert_file_exists "$HOME/.claude/bridge-status.log" \
+    assert_file_exists "$HOME/.claude/oddity-status.log" \
         "Status log should be created"
     
-    local log_content=$(cat "$HOME/.claude/bridge-status.log")
+    local log_content=$(cat "$HOME/.claude/oddity-status.log")
     assert_contains "$log_content" "Test message" "Messages should be logged"
     
     teardown_test_env
@@ -315,15 +315,15 @@ test_multi_project_isolation() {
     register_project "$HOME/project-b" "Task"
     
     # Verify both are registered
-    local registry=$(cat "$HOME/.claude/bridge-registry.json")
+    local registry=$(cat "$HOME/.claude/oddity-registry.json")
     assert_contains "$registry" "project-a" "Project A should be registered"
     assert_contains "$registry" "project-b" "Project B should be registered"
     
     # Verify different configurations
     local tools_a=$(jq -r '.projects["/home/test-tmp/project-a"].config.tools' \
-        "$HOME/.claude/bridge-registry.json" 2>/dev/null || echo "")
+        "$HOME/.claude/oddity-registry.json" 2>/dev/null || echo "")
     local tools_b=$(jq -r '.projects["/home/test-tmp/project-b"].config.tools' \
-        "$HOME/.claude/bridge-registry.json" 2>/dev/null || echo "")
+        "$HOME/.claude/oddity-registry.json" 2>/dev/null || echo "")
     
     assert_not_equals "$tools_a" "$tools_b" "Projects should have different tool configs"
     

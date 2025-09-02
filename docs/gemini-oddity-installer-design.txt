@@ -291,10 +291,10 @@ another pain point for the users is that they don't know
   [🌉 Bridge: Analyzing 15 files with Gemini...]                        
 
   # When complete                   
-  [🌉 Bridge: Analysis complete (2.3s)]                                 
+  [🌉 Oddity: Analysis complete (2.3s)]                                 
 
   # When fallback occurs            
-  [🌉 Bridge: Continuing with Claude]                                   
+  [🌉 Oddity: Continuing with Claude]                                   
 
   2. Status File for Real-time Monitoring                               
 
@@ -325,12 +325,12 @@ another pain point for the users is that they don't know
   Let users control notification level:                                 
 
   # In ~/.bashrc or project .env                                        
-  export CLAUDE_BRIDGE_NOTIFY=quiet    # No notifications               
+  export GEMINI_ODDITY_NOTIFY=quiet    # No notifications               
   (default)       
-  export CLAUDE_BRIDGE_NOTIFY=subtle   # Brief indicators               
+  export GEMINI_ODDITY_NOTIFY=subtle   # Brief indicators               
   only            
-  export CLAUDE_BRIDGE_NOTIFY=verbose  # Detailed feedback              
-  export CLAUDE_BRIDGE_NOTIFY=debug    # Everything                     
+  export GEMINI_ODDITY_NOTIFY=verbose  # Detailed feedback              
+  export GEMINI_ODDITY_NOTIFY=debug    # Everything                     
   including metrics                 
 
   5. Visual Indicators in Different Modes                               
@@ -381,7 +381,7 @@ another pain point for the users is that they don't know
   On first delegation in a session:                                     
 
   🌉 Gemini Oddity activated for this session                    
-     (Set CLAUDE_BRIDGE_NOTIFY=quiet to hide these                      
+     (Set GEMINI_ODDITY_NOTIFY=quiet to hide these                      
   messages)       
 
   8. Error Notifications            
@@ -397,7 +397,7 @@ another pain point for the users is that they don't know
       local level="$1"                                                  
       local message="$2"                                                
                                                                         
-      case "$CLAUDE_BRIDGE_NOTIFY" in                                   
+      case "$GEMINI_ODDITY_NOTIFY" in                                   
           quiet)                                                        
               # Only log to file                                        
               echo "$(date -Iseconds) $message" >>                      
@@ -430,8 +430,8 @@ another pain point for the users is that they don't know
   Auto-enable subtle mode for interactive terminals:                    
 
   # Auto-detect if running interactively                                
-  if [ -t 2 ] && [ -z "$CLAUDE_BRIDGE_NOTIFY" ]; then                   
-      export CLAUDE_BRIDGE_NOTIFY=subtle                                
+  if [ -t 2 ] && [ -z "$GEMINI_ODDITY_NOTIFY" ]; then                   
+      export GEMINI_ODDITY_NOTIFY=subtle                                
   fi              
 
   This design provides:             

@@ -94,25 +94,25 @@ Control how much feedback you see:
 
 ```bash
 # Quiet - no terminal output
-export CLAUDE_BRIDGE_NOTIFY=quiet
+export GEMINI_ODDITY_NOTIFY=quiet
 
 # Subtle - minimal indicators (default)
-export CLAUDE_BRIDGE_NOTIFY=subtle
+export GEMINI_ODDITY_NOTIFY=subtle
 
 # Verbose - full notifications
-export CLAUDE_BRIDGE_NOTIFY=verbose
+export GEMINI_ODDITY_NOTIFY=verbose
 
 # Debug - everything with timestamps
-export CLAUDE_BRIDGE_NOTIFY=debug
+export GEMINI_ODDITY_NOTIFY=debug
 ```
 
 ### Visual Indicators
 
-When `CLAUDE_BRIDGE_NOTIFY=subtle` (default):
+When `GEMINI_ODDITY_NOTIFY=subtle` (default):
 - 🌉 - Bridge is delegating to Gemini
 - ⚠️ - Error or warning occurred
 
-When `CLAUDE_BRIDGE_NOTIFY=verbose`:
+When `GEMINI_ODDITY_NOTIFY=verbose`:
 - 🌉 Bridge: Analyzing 15 files with Gemini...
 - 🌉 Bridge: Analysis complete (2.3s)
 - 🌉 Bridge: Using cached response
@@ -262,7 +262,7 @@ Enable detailed logging:
 
 ```bash
 # Terminal output
-export CLAUDE_BRIDGE_NOTIFY=debug
+export GEMINI_ODDITY_NOTIFY=debug
 
 # File logging
 export DEBUG=1
@@ -305,9 +305,9 @@ rm ~/.claude/bridge-status.log
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `CLAUDE_BRIDGE_NOTIFY` | `subtle` | Notification level (quiet/subtle/verbose/debug) |
+| `GEMINI_ODDITY_NOTIFY` | `subtle` | Notification level (quiet/subtle/verbose/debug) |
 | `DEBUG` | `0` | Enable debug output (0/1) |
-| `CLAUDE_BRIDGE_PROJECT_ROOT` | - | Override project root detection |
+| `GEMINI_ODDITY_PROJECT_ROOT` | - | Override project root detection |
 
 ## Migration from v1.x
 
