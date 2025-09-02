@@ -1,4 +1,4 @@
-# Gemini Oddity with OAuth 2.0 Authentication
+# 🚀 Gemini Oddity — Claude ↔ Gemini Bridge with OAuth 2.0
 
 <div align="center">
 
@@ -8,29 +8,45 @@
 [![Coverage](https://img.shields.io/badge/coverage-85%25-yellowgreen.svg)](test/reports/coverage.json)
 [![License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
 
-**🔐 Enterprise-grade OAuth 2.0 authentication for Claude Code and Google Gemini integration**
+✨ *“This is Ground Control to Major Tom…”* ✨  
+**Gemini Oddity** is a secure and playful bridge between **Claude Code** and **Google Gemini** —  
+forked from [tkaufmann/claude-gemini-bridge](https://github.com/tkaufmann/claude-gemini-bridge)  
+and given a cosmic twist in tribute to David Bowie’s *Space Oddity*.  
+
+🔐 Now with **enterprise-grade OAuth 2.0**, AES-256 encryption, and a colorful setup wizard.  
+🛰️ Because sometimes coding in zero gravity is the only way forward.
 
 [Quick Start](#-quick-start) • [Key Innovations](#-key-innovations) • [Security](#-security) • [Documentation](#-documentation)
 
 </div>
 
+---
+
 ## 🚀 What's New in v2.0
 
+<<<<<<< HEAD
 We've transformed Gemini Oddity into an **enterprise-ready solution** with comprehensive OAuth 2.0 authentication, replacing simple API keys with a secure, token-based authentication system that follows industry best practices.
+=======
+We’ve transformed the Claude–Gemini bridge into an **enterprise-ready solution** with comprehensive OAuth 2.0 authentication, replacing simple API keys with a secure, token-based system that follows industry best practices.
+>>>>>>> origin/main
 
 ### Major Innovations
 
-- **🔐 Full OAuth 2.0 Implementation**: Complete authorization code flow with PKCE support
-- **🔄 Automatic Token Management**: Seamless token refresh with encrypted storage
-- **🛡️ Military-grade Encryption**: AES-256-CBC encryption for all sensitive data
-- **🎨 Interactive Setup Wizard**: Beautiful ANSI-colored terminal UI for easy configuration
-- **🧪 Comprehensive Test Suite**: 85%+ coverage with security audits and performance benchmarks
-- **📚 Enterprise Documentation**: Complete guides for setup, migration, and security
-- **🏭 CI/CD Pipeline**: Automated testing across multiple platforms and Bash versions
+- **🔐 Full OAuth 2.0 Implementation**: Authorization code flow with PKCE
+- **🔄 Automatic Token Management**: Seamless refresh with encrypted storage
+- **🛡️ Strong Encryption**: AES-256-CBC for sensitive data
+- **🎨 Interactive Setup Wizard**: ANSI-colored terminal onboarding
+- **🧪 Comprehensive Tests**: 85%+ coverage with security & perf checks
+- **📚 Enterprise Docs**: Setup, migration, and security guides
+- **🏭 CI/CD**: Automated tests across OSes and Bash versions
 
 ## 🎯 Original Power + Enhanced Security
 
+<<<<<<< HEAD
 Gemini Oddity automatically delegates complex code analysis tasks from Claude Code to Google Gemini, combining Claude's reasoning capabilities with Gemini's large context processing power. **Now with OAuth 2.0, it's secure enough for enterprise deployment.**
+=======
+Gemini Oddity automatically delegates complex, large-context analysis from **Claude Code** to **Google Gemini**, combining Claude’s reasoning with Gemini’s extended context. **With OAuth 2.0, it’s now fit for enterprise deployment.**
+>>>>>>> origin/main
 
 ### How It Works
 
@@ -73,6 +89,7 @@ graph TB
     style OM fill:#4CAF50
     style EM fill:#FF9800
     style GA fill:#2196F3
+<<<<<<< HEAD
 ```
 
 ### Delegation Criteria (Optimized for Claude's 200k context)
@@ -484,3 +501,5 @@ Made with ❤️ for the Claude Code community
 [Security](./docs/SECURITY.md)
 
 </div>
+=======
+>>>>>>> origin/main
