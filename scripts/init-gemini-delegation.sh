@@ -26,9 +26,9 @@ echo ""
 check_dependencies() {
     local missing_deps=()
     
-    # Check for Claude Gemini Bridge
-    if [ ! -d "/home/dev/workspace/claude-gemini-bridge" ]; then
-        missing_deps+=("claude-gemini-bridge")
+    # Check for Gemini Oddity
+    if [ ! -d "/home/dev/workspace/gemini-oddity" ]; then
+        missing_deps+=("gemini-oddity")
     fi
     
     # Check for jq
@@ -126,14 +126,14 @@ update_claude_settings() {
     echo -e "${GREEN}✅ Claude settings updated${NC}"
 }
 
-# Create enhanced bridge script
-create_enhanced_bridge() {
-    echo -e "${BLUE}Creating enhanced Gemini bridge...${NC}"
+# Create enhanced oddity script
+create_enhanced_oddity() {
+    echo -e "${BLUE}Creating enhanced Gemini oddity...${NC}"
     
     cat > "$OPPIE_ROOT/hooks/enhanced-gemini-bridge.sh" << 'EOF'
 #!/bin/bash
-# Enhanced Gemini Bridge for Oppie DevKit
-# Integrates project-specific delegation rules with the main Gemini bridge
+# Enhanced Gemini Oddity for Oppie DevKit
+# Integrates project-specific delegation rules with the main Gemini oddity
 
 # Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -149,12 +149,12 @@ if [ -f "$PROJECT_ROOT/.oppie-hooks/project-overrides.sh" ]; then
     source "$PROJECT_ROOT/.oppie-hooks/project-overrides.sh"
 fi
 
-# Delegate to main Gemini bridge with enhanced configuration
-exec /home/dev/workspace/claude-gemini-bridge/hooks/gemini-bridge.sh "$@"
+# Delegate to main Gemini oddity with enhanced configuration
+exec /home/dev/workspace/gemini-oddity/hooks/gemini-bridge.sh "$@"
 EOF
     
     chmod +x "$OPPIE_ROOT/hooks/enhanced-gemini-bridge.sh"
-    echo -e "${GREEN}✅ Enhanced bridge created${NC}"
+    echo -e "${GREEN}✅ Enhanced oddity created${NC}"
 }
 
 # Create test script
@@ -183,7 +183,7 @@ echo "  Would analyze project structure and dependencies"
 
 echo ""
 echo "✅ Delegation test complete"
-echo "Check logs at: /home/dev/workspace/claude-gemini-bridge/logs/"
+echo "Check logs at: /home/dev/workspace/gemini-oddity/logs/"
 EOF
     
     chmod +x "$PROJECT_ROOT/.oppie-hooks/test-delegation.sh"
@@ -225,7 +225,7 @@ main() {
     
     check_dependencies
     install_delegation_config
-    create_enhanced_bridge
+    create_enhanced_oddity
     update_claude_settings
     create_test_script
     show_summary

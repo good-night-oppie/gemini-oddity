@@ -1,7 +1,7 @@
 #!/bin/bash
-# ABOUTME: Per-project uninstaller for Claude-Gemini Bridge
+# ABOUTME: Per-project uninstaller for Gemini Oddity
 
-echo "🗑️  Claude-Gemini Bridge Uninstaller"
+echo "🗑️  Gemini Oddity Uninstaller"
 echo "===================================="
 echo ""
 
@@ -12,7 +12,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 # Global variables
-BRIDGE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ODDITY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CLAUDE_SETTINGS_FILE="$HOME/.claude/settings.json"
 
 # Log function
@@ -29,7 +29,7 @@ log() {
 
 # Remove hooks from Claude settings
 remove_hooks() {
-    log "info" "Removing Claude-Gemini Bridge hooks..."
+    log "info" "Removing Gemini Oddity hooks..."
     
     if [ ! -f "$CLAUDE_SETTINGS_FILE" ]; then
         log "warn" "Claude settings file not found: $CLAUDE_SETTINGS_FILE"
@@ -37,7 +37,7 @@ remove_hooks() {
     fi
     
     # Check if our hook exists
-    local hook_path="$BRIDGE_DIR/hooks/gemini-bridge.sh"
+    local hook_path="$ODDITY_DIR/hooks/gemini-bridge.sh"
     if ! grep -q "$hook_path" "$CLAUDE_SETTINGS_FILE" 2>/dev/null; then
         log "info" "No hooks found for this installation"
         return 0
@@ -70,25 +70,25 @@ remove_hooks() {
     fi
 }
 
-# Remove bridge directory
+# Remove oddity directory
 remove_directory() {
     echo ""
-    echo "Do you want to remove the bridge directory and all its data?"
-    echo "Directory: $BRIDGE_DIR"
+    echo "Do you want to remove the oddity directory and all its data?"
+    echo "Directory: $ODDITY_DIR"
     read -p "Remove directory? (y/N): " confirm
     
     if [[ "$confirm" =~ ^[Yy]$ ]]; then
-        rm -rf "$BRIDGE_DIR"
-        log "info" "Bridge directory removed"
+        rm -rf "$ODDITY_DIR"
+        log "info" "Oddity directory removed"
     else
-        log "info" "Bridge directory preserved"
+        log "info" "Oddity directory preserved"
     fi
 }
 
 # Main uninstall
 main() {
-    echo "This will remove the Claude-Gemini Bridge from this project."
-    echo "Project directory: $(dirname "$BRIDGE_DIR")"
+    echo "This will remove the Gemini Oddity from this project."
+    echo "Project directory: $(dirname "$ODDITY_DIR")"
     echo ""
     read -p "Continue with uninstallation? (y/N): " confirm
     

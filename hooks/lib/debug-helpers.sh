@@ -1,14 +1,14 @@
 #!/bin/bash
-# ABOUTME: Debug helper functions for Claude-Gemini Bridge
+# ABOUTME: Debug helper functions for Gemini Oddity
 
 # Global variables
 DEBUG_LOG_DIR=""
 DEBUG_LEVEL=${DEBUG_LEVEL:-1}
 DEBUG_COMPONENT=""
 
-# Helper to get bridge directory
-get_bridge_dir() {
-    echo "${CLAUDE_GEMINI_BRIDGE_DIR:-$HOME/.claude-gemini-bridge}"
+# Helper to get oddity directory
+get_oddity_dir() {
+    echo "${GEMINI_ODDITY_DIR:-$HOME/.gemini-oddity}"
 }
 
 # Color codes for terminal output
@@ -27,7 +27,7 @@ init_debug() {
     
     # Fallback to default directory
     if [ -z "$DEBUG_LOG_DIR" ]; then
-        DEBUG_LOG_DIR="${CLAUDE_GEMINI_BRIDGE_DIR:-$HOME/.claude-gemini-bridge}/logs/debug"
+        DEBUG_LOG_DIR="${GEMINI_ODDITY_DIR:-$HOME/.gemini-oddity}/logs/debug"
     fi
     
     # Create log directory
@@ -54,7 +54,7 @@ debug_log() {
         
         # Ensure DEBUG_LOG_DIR is set
         if [ -z "$DEBUG_LOG_DIR" ]; then
-            DEBUG_LOG_DIR="/tmp/claude-gemini-bridge-logs"
+            DEBUG_LOG_DIR="/tmp/gemini-oddity-logs"
             mkdir -p "$DEBUG_LOG_DIR" 2>/dev/null
         fi
         
@@ -103,7 +103,7 @@ error_log() {
     
     # Ensure DEBUG_LOG_DIR is set before writing
     if [ -z "$DEBUG_LOG_DIR" ]; then
-        DEBUG_LOG_DIR="/tmp/claude-gemini-bridge-logs"
+        DEBUG_LOG_DIR="/tmp/gemini-oddity-logs"
         mkdir -p "$DEBUG_LOG_DIR" 2>/dev/null
     fi
     
@@ -116,14 +116,14 @@ error_log() {
 start_timer() {
     local timer_name="$1"
     local start_time=$(date +%s.%N)
-    echo "$start_time" > "/tmp/claude_bridge_timer_$timer_name"
+    echo "$start_time" > "/tmp/gemini_oddity_timer_$timer_name"
     debug_log 3 "Timer started: $timer_name"
 }
 
 # End performance measurement
 end_timer() {
     local timer_name="$1"
-    local timer_file="/tmp/claude_bridge_timer_$timer_name"
+    local timer_file="/tmp/gemini_oddity_timer_$timer_name"
     
     if [ -f "$timer_file" ]; then
         local start_time=$(cat "$timer_file")
@@ -233,7 +233,7 @@ cleanup_debug_files() {
     find "$(get_bridge_dir)/debug/captured" -name "*.json" -mtime +$days_to_keep -delete 2>/dev/null
     
     # Delete old timer files
-    find "/tmp" -name "claude_bridge_timer_*" -mtime +1 -delete 2>/dev/null
+    find "/tmp" -name "gemini_oddity_timer_*" -mtime +1 -delete 2>/dev/null
 }
 
 # Test function for debug helpers
@@ -242,7 +242,7 @@ test_debug_helpers() {
     local failed=0
     
     # Test directory
-    local test_dir="/tmp/claude_bridge_debug_test"
+    local test_dir="/tmp/gemini_oddity_debug_test"
     mkdir -p "$test_dir"
     
     # Test 1: Initialization

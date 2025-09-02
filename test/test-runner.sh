@@ -1,17 +1,17 @@
 #!/bin/bash
-# ABOUTME: Automated test suite for Claude-Gemini Bridge
+# ABOUTME: Automated test suite for Gemini Oddity
 
-echo "🚀 Claude-Gemini Bridge Test Suite"
+echo "🚀 Gemini Oddity Test Suite"
 echo "==================================="
 echo ""
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Use current directory structure (git repo = installation)
-BRIDGE_DIR="$SCRIPT_DIR/.."
-echo "🔧 Running from: $BRIDGE_DIR"
+ODDITY_DIR="$SCRIPT_DIR/.."
+echo "🔧 Running from: $ODDITY_DIR"
 
-BRIDGE_SCRIPT="$BRIDGE_DIR/hooks/gemini-bridge.sh"
+ODDITY_SCRIPT="$ODDITY_DIR/hooks/gemini-bridge.sh"
 MOCK_DIR="$SCRIPT_DIR/mock-tool-calls"
 
 # Statistics
@@ -36,7 +36,7 @@ run_test() {
     fi
     
     # Execute test
-    local result=$(cat "$json_file" | "$BRIDGE_SCRIPT" 2>/dev/null)
+    local result=$(cat "$json_file" | "$ODDITY_SCRIPT" 2>/dev/null)
     local exit_code=$?
     
     # Check exit code
@@ -117,7 +117,7 @@ run_test "Grep Search" "$MOCK_DIR/grep-search.json" "continue"
 # Test 5: Invalid JSON
 echo "🧪 Test $((TOTAL_TESTS + 1)): Invalid JSON"
 TOTAL_TESTS=$((TOTAL_TESTS + 1))
-INVALID_RESULT=$(echo '{"invalid": json}' | "$BRIDGE_SCRIPT" 2>/dev/null)
+INVALID_RESULT=$(echo '{"invalid": json}' | "$ODDITY_SCRIPT" 2>/dev/null)
 INVALID_EXIT=$?
 if [ $INVALID_EXIT -eq 1 ]; then
     echo "✅ PASSED: Invalid JSON handled correctly"
@@ -130,7 +130,7 @@ fi
 # Test 6: Empty Input
 echo "🧪 Test $((TOTAL_TESTS + 1)): Empty Input"
 TOTAL_TESTS=$((TOTAL_TESTS + 1))
-EMPTY_RESULT=$(echo '' | "$BRIDGE_SCRIPT" 2>/dev/null)
+EMPTY_RESULT=$(echo '' | "$ODDITY_SCRIPT" 2>/dev/null)
 EMPTY_EXIT=$?
 if [ $EMPTY_EXIT -eq 0 ] && [[ "$EMPTY_RESULT" == *"approve"* ]]; then
     echo "✅ PASSED: Empty input handled correctly"
@@ -146,7 +146,7 @@ echo "📚 Testing library functions..."
 
 # Path Converter Test
 echo "🧪 Testing path-converter.sh..."
-if "$BRIDGE_DIR/hooks/lib/path-converter.sh" >/dev/null 2>&1; then
+if "$ODDITY_DIR/hooks/lib/path-converter.sh" >/dev/null 2>&1; then
     echo "✅ PASSED: Path converter"
     PASSED_TESTS=$((PASSED_TESTS + 1))
 else
@@ -157,7 +157,7 @@ TOTAL_TESTS=$((TOTAL_TESTS + 1))
 
 # JSON Parser Test
 echo "🧪 Testing json-parser.sh..."
-if "$BRIDGE_DIR/hooks/lib/json-parser.sh" >/dev/null 2>&1; then
+if "$ODDITY_DIR/hooks/lib/json-parser.sh" >/dev/null 2>&1; then
     echo "✅ PASSED: JSON parser"
     PASSED_TESTS=$((PASSED_TESTS + 1))
 else
@@ -168,7 +168,7 @@ TOTAL_TESTS=$((TOTAL_TESTS + 1))
 
 # Debug Helpers Test
 echo "🧪 Testing debug-helpers.sh..."
-if "$BRIDGE_DIR/hooks/lib/debug-helpers.sh" >/dev/null 2>&1; then
+if "$ODDITY_DIR/hooks/lib/debug-helpers.sh" >/dev/null 2>&1; then
     echo "✅ PASSED: Debug helpers"
     PASSED_TESTS=$((PASSED_TESTS + 1))
 else
@@ -179,7 +179,7 @@ TOTAL_TESTS=$((TOTAL_TESTS + 1))
 
 # Gemini Wrapper Test
 echo "🧪 Testing gemini-wrapper.sh..."
-if "$BRIDGE_DIR/hooks/lib/gemini-wrapper.sh" >/dev/null 2>&1; then
+if "$ODDITY_DIR/hooks/lib/gemini-wrapper.sh" >/dev/null 2>&1; then
     echo "✅ PASSED: Gemini wrapper"
     PASSED_TESTS=$((PASSED_TESTS + 1))
 else
@@ -203,8 +203,8 @@ if [ $FAILED_TESTS -eq 0 ]; then
     exit 0
 else
     echo "💥 Some tests failed. Check the logs for details:"
-    echo "   Debug: $BRIDGE_DIR/logs/debug/$(date +%Y%m%d).log"
-    echo "   Errors: $BRIDGE_DIR/logs/debug/errors.log"
+    echo "   Debug: $ODDITY_DIR/logs/debug/$(date +%Y%m%d).log"
+    echo "   Errors: $ODDITY_DIR/logs/debug/errors.log"
     echo ""
     echo "Run manual tests for more details:"
     echo "   $SCRIPT_DIR/manual-test.sh"

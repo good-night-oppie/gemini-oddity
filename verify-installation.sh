@@ -1,8 +1,8 @@
 #!/bin/bash
-# ABOUTME: Verification script for OAuth-enhanced Claude-Gemini Bridge installation
+# ABOUTME: Verification script for OAuth-enhanced Gemini Oddity installation
 
 echo "╔════════════════════════════════════════════════════════╗"
-echo "║   Claude-Gemini Bridge v2.0 Installation Verification   ║"
+echo "║   Gemini Oddity v2.0 Installation Verification   ║"
 echo "╚════════════════════════════════════════════════════════╝"
 echo ""
 
@@ -119,10 +119,10 @@ if [ -f "$HOME/.claude/settings.json" ]; then
     echo -e "${GREEN}✓${NC} Claude settings file exists"
     
     # Check if our hook is configured
-    if grep -q "claude-gemini-bridge-original/hooks/gemini-bridge.sh" "$HOME/.claude/settings.json"; then
-        echo -e "${GREEN}✓${NC} Bridge hook is configured in Claude"
+    if grep -q "gemini-oddity-original/hooks/gemini-bridge.sh" "$HOME/.claude/settings.json"; then
+        echo -e "${GREEN}✓${NC} Oddity hook is configured in Claude"
     else
-        echo -e "${RED}✗${NC} Bridge hook not found in Claude settings"
+        echo -e "${RED}✗${NC} Oddity hook not found in Claude settings"
     fi
 else
     echo -e "${YELLOW}⚠${NC} Claude settings not found"
@@ -164,7 +164,7 @@ echo "╚═══════════════════════�
 echo ""
 echo "1. Restart Claude Code (hooks load at startup)"
 echo "2. Run OAuth setup: ./setup/interactive-setup.sh"
-echo "3. Test the bridge: ./test/test-runner.sh"
+echo "3. Test the oddity: ./test/test-runner.sh"
 echo "4. Run security audit: ./test/security/test-security-audit.sh"
 echo "5. Check performance: ./test/performance/test-performance-benchmarks.sh"
 echo ""

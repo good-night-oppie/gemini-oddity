@@ -1,19 +1,19 @@
 #!/bin/bash
-# ABOUTME: Universal router that delegates to project-specific Claude-Gemini Bridge installations
+# ABOUTME: Universal router that delegates to project-specific Gemini Oddity installations
 
-# Universal Router for Claude-Gemini Bridge
-# Routes tool calls to appropriate project-specific bridge installations
+# Universal Router for Gemini Oddity
+# Routes tool calls to appropriate project-specific oddity installations
 # Maintains a registry of installed projects and their configurations
 
 set -euo pipefail
 
 # Configuration
-BRIDGE_REGISTRY="$HOME/.claude/bridge-registry.json"
-BRIDGE_STATUS_LOG="$HOME/.claude/bridge-status.log"
+ODDITY_REGISTRY="$HOME/.claude/oddity-registry.json"
+ODDITY_STATUS_LOG="$HOME/.claude/oddity-status.log"
 ROUTER_VERSION="2.0.0"
 
 # Notification levels
-export CLAUDE_BRIDGE_NOTIFY="${CLAUDE_BRIDGE_NOTIFY:-subtle}"
+export GEMINI_ODDITY_NOTIFY="${GEMINI_ODDITY_NOTIFY:-subtle}"
 
 # Colors for notifications
 GREEN='\033[0;32m'
@@ -30,9 +30,9 @@ notify_user() {
     local timestamp=$(date -Iseconds)
     
     # Always log to status file
-    echo "$timestamp [$level] $message" >> "$BRIDGE_STATUS_LOG"
+    echo "$timestamp [$level] $message" >> "$ODDITY_STATUS_LOG"
     
-    case "$CLAUDE_BRIDGE_NOTIFY" in
+    case "$GEMINI_ODDITY_NOTIFY" in
         quiet)
             # Only log to file, no terminal output
             ;;
@@ -41,18 +41,18 @@ notify_user() {
             if [[ "$level" == "DELEGATE" ]]; then
                 echo -e "${DIM}🌉${NC}" >&2
             elif [[ "$level" == "ERROR" ]]; then
-                echo -e "${RED}⚠️ Bridge: $message${NC}" >&2
+                echo -e "${RED}⚠️ Oddity: $message${NC}" >&2
             fi
             ;;
         verbose)
             # Full message to stderr
             case "$level" in
-                ACTIVE) echo -e "${GREEN}🌉 Bridge: $message${NC}" >&2 ;;
-                DELEGATE) echo -e "${BLUE}🌉 Bridge: $message${NC}" >&2 ;;
-                SUCCESS) echo -e "${GREEN}🌉 Bridge: $message${NC}" >&2 ;;
-                ERROR) echo -e "${RED}🌉 Bridge: $message${NC}" >&2 ;;
-                SKIP) echo -e "${DIM}🌉 Bridge: $message${NC}" >&2 ;;
-                *) echo -e "🌉 Bridge: $message" >&2 ;;
+                ACTIVE) echo -e "${GREEN}🌉 Oddity: $message${NC}" >&2 ;;
+                DELEGATE) echo -e "${BLUE}🌉 Oddity: $message${NC}" >&2 ;;
+                SUCCESS) echo -e "${GREEN}🌉 Oddity: $message${NC}" >&2 ;;
+                ERROR) echo -e "${RED}🌉 Oddity: $message${NC}" >&2 ;;
+                SKIP) echo -e "${DIM}🌉 Oddity: $message${NC}" >&2 ;;
+                *) echo -e "🌉 Oddity: $message" >&2 ;;
             esac
             ;;
         debug)
@@ -73,7 +73,7 @@ initialize_registry() {
     "router_installed": "$(date -Iseconds)"
 }
 EOF
-        notify_user "INFO" "Initialized bridge registry"
+        notify_user "INFO" "Initialized oddity registry"
     fi
 }
 
@@ -110,8 +110,8 @@ find_project_root() {
     
     # Walk up directory tree looking for project markers
     while [[ "$dir" != "/" ]]; do
-        # Check for .claude-gemini-bridge directory
-        if [[ -d "$dir/.claude-gemini-bridge" ]]; then
+        # Check for .gemini-oddity directory
+        if [[ -d "$dir/.gemini-oddity" ]]; then
             echo "$dir"
             return 0
         fi
@@ -150,16 +150,16 @@ is_project_registered() {
     fi
 }
 
-# Route to project-specific bridge
-route_to_project_bridge() {
+# Route to project-specific oddity
+route_to_project_oddity() {
     local project_dir="$1"
     local tool_name="$2"
     local tool_args="$3"
     
-    local bridge_script="$project_dir/.claude-gemini-bridge/hooks/gemini-bridge.sh"
+    local oddity_script="$project_dir/.gemini-oddity/hooks/gemini-bridge.sh"
     
-    if [[ ! -f "$bridge_script" ]]; then
-        notify_user "ERROR" "Bridge script not found at $bridge_script"
+    if [[ ! -f "$oddity_script" ]]; then
+        notify_user "ERROR" "Oddity script not found at $oddity_script"
         echo '{"action": "continue"}'
         return 1
     fi
@@ -178,9 +178,9 @@ route_to_project_bridge() {
     # Log delegation
     notify_user "DELEGATE" "Routing $tool_name to project: $(basename "$project_dir")"
     
-    # Execute project-specific bridge
-    export CLAUDE_BRIDGE_PROJECT_ROOT="$project_dir"
-    bash "$bridge_script"
+    # Execute project-specific oddity
+    export GEMINI_ODDITY_PROJECT_ROOT="$project_dir"
+    bash "$oddity_script"
 }
 
 # Main routing logic
@@ -225,13 +225,13 @@ main() {
         exit 0
     fi
     
-    # Route to project bridge
-    echo "$tool_call" | route_to_project_bridge "$project_root" "$tool_name" "$tool_call"
+    # Route to project oddity
+    echo "$tool_call" | route_to_project_oddity "$project_root" "$tool_name" "$tool_call"
 }
 
 # Auto-detect if running interactively and set notification level
-if [[ -t 2 ]] && [[ -z "${CLAUDE_BRIDGE_NOTIFY:-}" ]]; then
-    export CLAUDE_BRIDGE_NOTIFY="subtle"
+if [[ -t 2 ]] && [[ -z "${GEMINI_ODDITY_NOTIFY:-}" ]]; then
+    export GEMINI_ODDITY_NOTIFY="subtle"
 fi
 
 # Handle special commands (for testing/debugging)
@@ -240,7 +240,7 @@ if [[ "${1:-}" == "--status" ]]; then
     echo "━━━━━━━━━━━━━━━━━━━━━━"
     echo "Version: $ROUTER_VERSION"
     echo "Registry: $BRIDGE_REGISTRY"
-    echo "Notification: ${CLAUDE_BRIDGE_NOTIFY:-subtle}"
+    echo "Notification: ${GEMINI_ODDITY_NOTIFY:-subtle}"
     
     if [[ -f "$BRIDGE_REGISTRY" ]]; then
         echo ""

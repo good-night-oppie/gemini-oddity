@@ -1,7 +1,7 @@
 #!/bin/bash
-# ABOUTME: Uninstaller for Claude-Gemini Bridge - removes hooks and optionally cleans up data
+# ABOUTME: Uninstaller for Gemini Oddity - removes hooks and optionally cleans up data
 
-echo "🗑️  Claude-Gemini Bridge Uninstaller"
+echo "🗑️  Gemini Oddity Uninstaller"
 echo "===================================="
 echo ""
 
@@ -63,7 +63,7 @@ remove_claude_hooks() {
     # Check if our hook exists
     local hook_command="$SCRIPT_DIR/hooks/gemini-bridge.sh"
     if ! grep -q "gemini-bridge.sh" "$CLAUDE_SETTINGS_FILE" 2>/dev/null; then
-        log "info" "No Claude-Gemini Bridge hooks found in settings"
+        log "info" "No Gemini Oddity hooks found in settings"
         return 0
     fi
     
@@ -166,27 +166,27 @@ show_summary() {
     echo "🎉 Uninstallation completed!"
     echo "============================"
     echo ""
-    echo "✅ Claude-Gemini Bridge hooks removed from: $CLAUDE_SETTINGS_FILE"
-    echo "📁 Bridge directory remains: $SCRIPT_DIR"
+    echo "✅ Gemini Oddity hooks removed from: $CLAUDE_SETTINGS_FILE"
+    echo "📁 Oddity directory remains: $SCRIPT_DIR"
     echo ""
     echo "📚 Next steps:"
     echo ""
     echo "   1. **RESTART Claude Code** to apply hook changes"
     echo ""
-    echo "   2. Optional: Remove the bridge directory manually:"
+    echo "   2. Optional: Remove the oddity directory manually:"
     echo "      rm -rf $SCRIPT_DIR"
     echo ""
     echo "   3. If needed, restore settings backup:"
     echo "      cp ${CLAUDE_SETTINGS_FILE}.backup.${BACKUP_SUFFIX} $CLAUDE_SETTINGS_FILE"
     echo ""
-    echo "💡 The Claude-Gemini Bridge can be reinstalled anytime by running:"
-    echo "    git clone [repository] && cd claude-gemini-bridge && ./install.sh"
+    echo "💡 The Gemini Oddity can be reinstalled anytime by running:"
+    echo "    git clone [repository] && cd gemini-oddity && ./install.sh"
 }
 
 # Main uninstallation
 main() {
-    echo "This script removes Claude-Gemini Bridge hooks from Claude Code settings."
-    echo "Bridge directory: $SCRIPT_DIR"
+    echo "This script removes Gemini Oddity hooks from Claude Code settings."
+    echo "Oddity directory: $SCRIPT_DIR"
     echo ""
     
     # Ask what to clean up

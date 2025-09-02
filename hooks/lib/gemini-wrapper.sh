@@ -2,14 +2,14 @@
 # ABOUTME: Wrapper for Gemini CLI with caching and rate limiting
 
 # Configuration
-GEMINI_CACHE_DIR="${GEMINI_CACHE_DIR:-${CLAUDE_GEMINI_BRIDGE_DIR:-$HOME/.claude-gemini-bridge}/cache/gemini}"
+GEMINI_CACHE_DIR="${GEMINI_CACHE_DIR:-${GEMINI_ODDITY_DIR:-$HOME/.gemini-oddity}/cache/gemini}"
 GEMINI_CACHE_TTL="${GEMINI_CACHE_TTL:-3600}"  # 1 hour
 GEMINI_TIMEOUT="${GEMINI_TIMEOUT:-30}"        # 30 seconds
 GEMINI_RATE_LIMIT="${GEMINI_RATE_LIMIT:-1}"   # 1 second between calls
 GEMINI_MAX_FILES="${GEMINI_MAX_FILES:-20}"    # Max 20 files per call
 
 # Rate limiting file
-RATE_LIMIT_FILE="/tmp/claude_bridge_gemini_last_call"
+RATE_LIMIT_FILE="/tmp/gemini_oddity_last_call"
 
 # Initialize Gemini wrapper
 init_gemini_wrapper() {
