@@ -24,11 +24,7 @@ and given a cosmic twist in tribute to David Bowie’s *Space Oddity*.
 
 ## 🚀 What's New in v2.0
 
-<<<<<<< HEAD
 We've transformed Gemini Oddity into an **enterprise-ready solution** with comprehensive OAuth 2.0 authentication, replacing simple API keys with a secure, token-based authentication system that follows industry best practices.
-=======
-We’ve transformed the Claude–Gemini bridge into an **enterprise-ready solution** with comprehensive OAuth 2.0 authentication, replacing simple API keys with a secure, token-based system that follows industry best practices.
->>>>>>> origin/main
 
 ### Major Innovations
 
@@ -42,11 +38,7 @@ We’ve transformed the Claude–Gemini bridge into an **enterprise-ready soluti
 
 ## 🎯 Original Power + Enhanced Security
 
-<<<<<<< HEAD
 Gemini Oddity automatically delegates complex code analysis tasks from Claude Code to Google Gemini, combining Claude's reasoning capabilities with Gemini's large context processing power. **Now with OAuth 2.0, it's secure enough for enterprise deployment.**
-=======
-Gemini Oddity automatically delegates complex, large-context analysis from **Claude Code** to **Google Gemini**, combining Claude’s reasoning with Gemini’s extended context. **With OAuth 2.0, it’s now fit for enterprise deployment.**
->>>>>>> origin/main
 
 ### How It Works
 
@@ -89,7 +81,6 @@ graph TB
     style OM fill:#4CAF50
     style EM fill:#FF9800
     style GA fill:#2196F3
-<<<<<<< HEAD
 ```
 
 ### Delegation Criteria (Optimized for Claude's 200k context)
@@ -501,5 +492,3 @@ Made with ❤️ for the Claude Code community
 [Security](./docs/SECURITY.md)
 
 </div>
-=======
->>>>>>> origin/main
